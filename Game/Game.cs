@@ -1,65 +1,55 @@
+using System.Linq;
 using Engine;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended;
+using Veldrid;
+using Veldrid.Sdl2;
+using Veldrid.StartupUtilities;
 
 namespace Game
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class UtilityGridGame : Microsoft.Xna.Framework.Game
+    public class UtilityGridGame : Engine.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        private readonly FramesPerSecondCounterComponent _fps;
+        private Sdl2Window _window;
         private Camera _camera;
+        private static CommandList _commandList;
 
         public UtilityGridGame()
         {
-            graphics = new GraphicsDeviceManager(this) {PreferMultiSampling = true};
-            Content.RootDirectory = "Content";
-
-            Components.Add(_fps = new FramesPerSecondCounterComponent(this));
-            Components.Add(_camera = new Camera(this, GraphicsDevice));
+            Components.Add(_camera = new Camera(this));
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
+        protected override GraphicsDevice CreateGraphicsDevice()
+        {
+            var windowCreateInfo = new WindowCreateInfo()
+            {
+                X = 100,
+                Y = 100,
+                WindowWidth = 960,
+                WindowHeight = 540,
+                WindowTitle = "Utility Grid"
+            };
+            _window = VeldridStartup.CreateWindow(ref windowCreateInfo);
+            _window.CursorVisible = true;
+
+            // TODO: Setup multisampling AA
+
+            return VeldridStartup.CreateGraphicsDevice(_window);
+        }
+
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            IsMouseVisible = true;
-            Window.AllowAltF4 = false;
-            Window.Title = "Utility Grid";
+            _commandList = ResourceFactory.CreateCommandList();
 
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
-        protected override void LoadContent()
+        public override void Dispose()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _commandList.Dispose();
 
-            // TODO: use this.Content to load your game content here
-        }
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
+            base.Dispose();
         }
 
         /// <summary>
@@ -69,28 +59,46 @@ namespace Game
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (!_window.Exists)
+            {
+                Exit();
+                return;
+            }
+
+            var inputSnapshot = _window.PumpEvents();
+
+            if (IsKeyDown(inputSnapshot, Key.Escape))
                 Exit();
 
             // TODO: Add your update logic here
 
             base.Update(gameTime);
 
-            Window.Title = $"Utility Grid - {_fps.FramesPerSecond} fps";
+            var frameTime = gameTime.ElapsedGameTime.Milliseconds;
+            _window.Title = $"Utility Grid - {frameTime} ms - {FramesPerSecond} fps";
         }
 
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
+        protected override void Render(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            _commandList.Begin();
+            _commandList.SetFramebuffer(Framebuffer);
+            _commandList.ClearColorTarget(0, RgbaFloat.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            // TODO: Draw geometry with the command list
 
-            base.Draw(gameTime);
+            _commandList.End();
+            GraphicsDevice.SubmitCommands(_commandList);
+
+            base.Render(gameTime);
+        }
+
+        private bool IsKeyDown(InputSnapshot snapshot, Key key)
+        {
+            return snapshot.KeyEvents.Any(k => k.Down && k.Key == key);
         }
     }
 }

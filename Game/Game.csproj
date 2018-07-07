@@ -1,34 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <AssemblyName>Game</AssemblyName>
-        <MonoGamePlatform>DesktopGL</MonoGamePlatform>
-        <TargetFramework>netcoreapp2.0</TargetFramework>
-        <OutputType>Exe</OutputType>
-    </PropertyGroup>
-
-    <!-- MonoGame Support -->
-    <ItemGroup>
-        <MonoGameContentReference Include="Content\Content.mgcb" />
-    </ItemGroup>
-    <ItemGroup>
-      <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.4" />
-      <PackageReference Include="MonoGame.Extended.Input" Version="1.1.0" />
-      <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.7.0.7" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\Engine\Engine.csproj" />
-    </ItemGroup>
-
-    <!-- MonoGame Build Tools -->
-    <!--<PropertyGroup>-->
-        <!--<MonoGameBuildTools Condition="Exists('$(MSBuildExtensionsPath)/MonoGame/v3.0')">$(MSBuildExtensionsPath)/MonoGame/v3.0</MonoGameBuildTools>-->
-        <!--<MonoGameBuildTools Condition="Exists('/usr/lib/mono/xbuild/MonoGame/v3.0')">/usr/lib/mono/xbuild/MonoGame/v3.0</MonoGameBuildTools>-->
-    <!--</PropertyGroup>-->
-    <!--<Import Project="$(MonoGameBuildTools)\MonoGame.Common.props" Condition="'$(MonoGameBuildTools)' != ''" />-->
-    <!--<Import Project="$(MonoGameBuildTools)\MonoGame.Content.Builder.targets" Condition="'$(MonoGameBuildTools)' != ''" />-->
-
-    <!--<Target Name="MonoGameBuild" AfterTargets="BeforeBuild">-->
-        <!--<Error Text="Cannot locate MonoGame build tools!" Condition="'$(MonoGameBuildTools)' == ''" />-->
-        <!--<CallTarget Targets="BuildContent" />-->
-    <!--</Target>-->
+  <PropertyGroup>
+    <AssemblyName>Game</AssemblyName>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Veldrid.StartupUtilities" Version="4.4.0-beta1" />
+  </ItemGroup>
 </Project>

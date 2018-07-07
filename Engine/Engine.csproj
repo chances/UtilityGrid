@@ -1,12 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="MonoGame.Extended.Tweening" Version="1.1.0" />
-      <PackageReference Include="MonoGame.Framework.Portable" Version="3.6.0.1625" />
-    </ItemGroup>
-
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Veldrid" Version="4.4.0-beta1" />
+    <PackageReference Include="Veldrid.Utilities" Version="4.4.0-beta1" />
+  </ItemGroup>
 </Project>
