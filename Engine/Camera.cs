@@ -8,7 +8,8 @@ namespace Engine
     public class Camera : Component
     {
         private readonly GraphicsDevice _device;
-        private Vector3 _position = new Vector3(15, 10, 10);
+
+        private readonly Vector3 _position = new Vector3(15, 10, 10);
         // TODO: Implement tweener from MonoGame.Extended.Tween
 //        TweeningComponent _tweener;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Engine.Components
+﻿namespace Engine.Components
 {
     public interface IUpdatable
     {

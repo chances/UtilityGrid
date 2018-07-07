@@ -4,6 +4,7 @@
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <OutputType>Exe</OutputType>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />

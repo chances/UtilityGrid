@@ -18,16 +18,11 @@ namespace Engine
             IsRunningSlowly = false;
         }
 
-        public GameTime(TimeSpan totalGameTime, TimeSpan elapsedGameTime, bool isRunningSlowly)
+        private GameTime(TimeSpan totalGameTime, TimeSpan elapsedGameTime, bool isRunningSlowly)
         {
             TotalGameTime = totalGameTime;
             ElapsedGameTime = elapsedGameTime;
             IsRunningSlowly = isRunningSlowly;
-        }
-
-        public static GameTime RunningSlowly(GameTime gameTime)
-        {
-            return new GameTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime, true);
         }
 
         /// <summary>
@@ -63,5 +58,10 @@ namespace Engine
         /// true if the game loop is taking too long; false otherwise.
         /// </value>
         public bool IsRunningSlowly { get; }
+
+        public static GameTime RunningSlowly(GameTime gameTime)
+        {
+            return new GameTime(gameTime.TotalGameTime, gameTime.ElapsedGameTime, true);
+        }
     }
 }

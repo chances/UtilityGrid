@@ -1,8 +1,9 @@
-using System.Linq;
 using Engine;
 using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
+using Key = Engine.Input.Key;
+using MouseButton = Engine.Input.MouseButton;
 
 namespace Game
 {
@@ -66,11 +67,11 @@ namespace Game
             }
 
             var inputSnapshot = _window.PumpEvents();
+            ProcessInput(InputSnapshotConverter.Mouse(inputSnapshot, MouseState),
+                InputSnapshotConverter.Keyboard(inputSnapshot));
 
-            if (IsKeyDown(inputSnapshot, Key.Escape))
+            if (KeyboardState.IsKeyDown(Key.Escape))
                 Exit();
-
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
 
@@ -86,7 +87,8 @@ namespace Game
         {
             _commandList.Begin();
             _commandList.SetFramebuffer(Framebuffer);
-            _commandList.ClearColorTarget(0, RgbaFloat.CornflowerBlue);
+            _commandList.ClearColorTarget(0,
+                MouseState.IsButtonDown(MouseButton.Left) ? RgbaFloat.Cyan : RgbaFloat.CornflowerBlue);
 
             // TODO: Draw geometry with the command list
 
@@ -94,11 +96,6 @@ namespace Game
             GraphicsDevice.SubmitCommands(_commandList);
 
             base.Render(gameTime);
-        }
-
-        private bool IsKeyDown(InputSnapshot snapshot, Key key)
-        {
-            return snapshot.KeyEvents.Any(k => k.Down && k.Key == key);
         }
     }
 }
