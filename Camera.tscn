@@ -32,13 +32,13 @@ func _unhandled_input(event):
 		pan_tween(0, -1, PAN_SPEED)
 	if Input.is_action_pressed(\"ui_down\"):
 		pan_tween(0, 1, PAN_SPEED)
-	
+
 	# Orbit
 	if Input.is_action_pressed(\"camera_rotate\"):
 		is_orbiting = true
 	elif Input.is_action_just_released(\"camera_rotate\"):
 		is_orbiting = false
-	
+
 	# Zoom via scroll
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_WHEEL_UP:
@@ -49,7 +49,7 @@ func _unhandled_input(event):
 			# Zoom out
 			var delta = ZOOM_SPEED if event.factor == 0 else event.factor
 			zoom(-delta)
-	
+
 	# Orbit
 	if is_orbiting and event is InputEventMouseMotion:
 		orbit(-event.relative.x, -event.relative.y, ORBIT_SPEED)
@@ -116,10 +116,10 @@ v_offset = 0.0
 doppler_tracking = 0
 projection = 0
 current = false
-fov = 70.0
+fov = 110.0
 size = 1.0
 near = 0.05
-far = 100.0
+far = 100000.0
 
 [node name="Tween" type="Tween" parent="." index="1"]
 
