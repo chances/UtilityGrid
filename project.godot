@@ -22,7 +22,6 @@ settings/fps/force_fps=60
 [display]
 
 window/size/width=800
-window/stretch/mode="viewport"
 
 [input]
 

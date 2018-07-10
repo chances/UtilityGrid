@@ -88,9 +88,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 57.0
-margin_right = 144.0
-margin_bottom = 494.0
+margin_top = 53.0
+margin_right = 82.0
+margin_bottom = 498.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -105,9 +105,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 177.0
-margin_right = 144.0
-margin_bottom = 214.0
+margin_top = 200.0
+margin_right = 82.0
+margin_bottom = 220.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -129,9 +129,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 222.0
-margin_right = 109.0
-margin_bottom = 259.0
+margin_top = 224.0
+margin_right = 63.0
+margin_bottom = 244.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -162,7 +162,9 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_constants/separation = 10
 alignment = 0
+_sections_unfolded = [ "custom_constants" ]
 
 [node name="Copyright" type="Label" parent="Sidebar/Footer" index="0"]
 
@@ -170,38 +172,23 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 347.0
+margin_right = 677.0
 margin_bottom = 18.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
+size_flags_horizontal = 3
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
 text = "Copyright © 2018 Chance Snow, All Rights Reserved."
+autowrap = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-
-[node name="Container" type="Container" parent="Sidebar/Footer" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 355.0
-margin_right = 679.0
-margin_bottom = 18.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="Version" type="Label" parent="Sidebar/Footer" index="2"]
+[node name="Version" type="Label" parent="Sidebar/Footer" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
