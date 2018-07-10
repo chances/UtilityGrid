@@ -22,11 +22,7 @@ settings/fps/force_fps=60
 [display]
 
 window/size/width=800
-window/dpi/allow_hidpi=true
-
-[gui]
-
-theme/use_hidpi=true
+window/stretch/mode="viewport"
 
 [input]
 
@@ -46,3 +42,4 @@ file_logging/log_path="user://logs/utility-grid/log.txt"
 environment/default_clear_color=Color( 0, 0, 0, 1 )
 quality/filters/msaa=1
 environment/default_environment="res://default_env.tres"
+quality/dynamic_fonts/use_oversampling=true
