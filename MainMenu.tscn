@@ -13,6 +13,7 @@ func _ready():
 
 func _new_game_pressed():
 	emit_signal(\"new_game\")
+	get_tree().change_scene(\"res://Game.tscn\")
 
 func _options_pressed():
 	emit_signal(\"options\")
@@ -47,7 +48,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 40.0
 margin_top = 40.0
-margin_right = 984.0
+margin_right = 760.0
 margin_bottom = 560.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -63,8 +64,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 70.0
-margin_bottom = 14.0
+margin_right = 116.0
+margin_bottom = 25.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -82,9 +83,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 18.0
-margin_right = 82.0
-margin_bottom = 485.0
+margin_top = 33.0
+margin_right = 144.0
+margin_bottom = 456.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -99,9 +100,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 211.0
-margin_right = 82.0
-margin_bottom = 231.0
+margin_top = 170.0
+margin_right = 144.0
+margin_bottom = 207.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -123,9 +124,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 235.0
-margin_right = 63.0
-margin_bottom = 255.0
+margin_top = 215.0
+margin_right = 109.0
+margin_bottom = 252.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -147,8 +148,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 489.0
-margin_right = 944.0
+margin_top = 464.0
+margin_right = 720.0
 margin_bottom = 520.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false

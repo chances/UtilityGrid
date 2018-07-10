@@ -1,8 +1,113 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
 
-[node name="Camera" type="Camera" index="0"]
+[sub_resource type="GDScript" id=1]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 10 )
+script/source = "extends Spatial
+
+const PAN_SPEED = 0.25
+const PAN_TWEEN_DURATION = 0.3
+
+const ORBIT_SPEED = 0.02
+const ORBIT_SPEED_MAC = 0.2
+
+const MIN_ZOOM = 3
+const MAX_ZOOM = 200
+const ZOOM_SPEED = 0.01
+
+onready var tween = $Tween
+
+var is_orbiting = false
+
+func _ready():
+	zoom(7)
+	orbit(deg2rad(40), deg2rad(-40), 1.0)
+
+func _unhandled_input(event):
+	# Pan
+	if Input.is_action_pressed(\"ui_left\"):
+		pan_tween(-1, 0, PAN_SPEED)
+	if Input.is_action_pressed(\"ui_right\"):
+		pan_tween(1, 0, PAN_SPEED)
+	if Input.is_action_pressed(\"ui_up\"):
+		pan_tween(0, -1, PAN_SPEED)
+	if Input.is_action_pressed(\"ui_down\"):
+		pan_tween(0, 1, PAN_SPEED)
+	
+	# Orbit
+	if Input.is_action_pressed(\"camera_rotate\"):
+		is_orbiting = true
+	elif Input.is_action_just_released(\"camera_rotate\"):
+		is_orbiting = false
+	
+	# Zoom via scroll
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_WHEEL_UP:
+			# Zoom in
+			var delta = ZOOM_SPEED if event.factor == 0 else event.factor
+			zoom(delta)
+		elif event.button_index == BUTTON_WHEEL_DOWN:
+			# Zoom out
+			var delta = ZOOM_SPEED if event.factor == 0 else event.factor
+			zoom(-delta)
+	
+	# Orbit
+	if is_orbiting and event is InputEventMouseMotion:
+		orbit(-event.relative.x, -event.relative.y, ORBIT_SPEED)
+	elif event is InputEventPanGesture:
+		# Orbit w/ control+pan gesture on macOS
+		if event.control:
+			orbit(event.delta.x, event.delta.y, ORBIT_SPEED_MAC)
+		# Pan w/ shit+pan gesture on macOS
+		elif event.shift:
+			pan(event.delta.x, event.delta.y, 1.0)
+		# Zoom w/ pan gesture on macOS
+		else:
+			zoom(event.delta.y)
+
+func pan_tween(x, y, speed):
+#	if tween.is_active():
+#		tween.remove_all()
+	var x_dest = x * speed * PAN_TWEEN_DURATION
+	var y_dest = y * speed * PAN_TWEEN_DURATION
+	tween.interpolate_method(self, \"pan_x\", 0, x_dest, PAN_TWEEN_DURATION, Tween.TRANS_CUBIC, Tween.EASE_OUT, 0)
+	tween.interpolate_method(self, \"pan_y\", 0, y_dest, PAN_TWEEN_DURATION, Tween.TRANS_CUBIC, Tween.EASE_OUT, 0)
+	if not tween.is_active():
+		tween.start()
+
+func pan_x(x):
+	global_translate(global_transform.basis.x * x)
+func pan_y(y):
+	global_translate(global_transform.basis.z * y)
+
+func pan(x, y, speed):
+	global_translate(global_transform.basis.x * (x * speed))
+	global_translate(global_transform.basis.z * (y * speed))
+
+func orbit(pitch, yaw, speed):
+	rotate_y(pitch * speed)
+	$Yaw.rotation.x = clamp($Yaw.rotation.x + (yaw * speed), -(PI / 2), -0.05)
+
+onready var camera = $Yaw/Camera
+
+func zoom(delta):
+	var distance = clamp(camera.translation.z + delta, MIN_ZOOM, MAX_ZOOM)
+	camera.translation = Vector3(0, 0, distance)
+
+func _process(delta):
+	pass
+"
+
+[node name="Pitch" type="Spatial"]
+
+script = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Yaw" type="Spatial" parent="." index="0"]
+
+_sections_unfolded = [ "Transform" ]
+
+[node name="Camera" type="Camera" parent="Yaw" index="0"]
+
 keep_aspect = 1
 cull_mask = 1048575
 environment = null
@@ -15,5 +120,14 @@ fov = 70.0
 size = 1.0
 near = 0.05
 far = 100.0
+
+[node name="Tween" type="Tween" parent="." index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
 
 
