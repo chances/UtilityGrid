@@ -22,7 +22,7 @@ subdivide_depth = 0
 
 render_priority = 0
 shader = ExtResource( 3 )
-shader_param/color = Color( 0.619141, 0.541821, 0.363987, 1 )
+shader_param/color = Color( 0.945098, 0.945098, 0.945098, 1 )
 _sections_unfolded = [ "shader_param" ]
 
 [sub_resource type="ShaderMaterial" id=4]
@@ -49,7 +49,7 @@ subdivide_depth = 0
 transform = Transform( -1, 5.61943e-08, -6.69697e-08, 0, 0.766044, 0.642788, 8.74228e-08, 0.642788, -0.766044, 0, 4, -4 )
 layers = 1
 light_color = Color( 1, 1, 1, 1 )
-light_energy = 0.25
+light_energy = 0.76
 light_indirect_energy = 1.0
 light_negative = false
 light_specular = 0.5
@@ -80,7 +80,7 @@ material/0 = SubResource( 1 )
 
 [node name="Floor" type="MeshInstance" parent="." index="3"]
 
-transform = Transform( 3000, 0, 0, 0, 1, 0, 0, 0, 3000, 0.00180316, 0.00280583, 5.03063e-05 )
+transform = Transform( 750, 0, 0, 0, 1, 0, 0, 0, 750, 0.00180316, 0.00280583, 5.03063e-05 )
 layers = 1
 material_override = null
 cast_shadow = 0
@@ -95,24 +95,7 @@ skeleton = NodePath("..")
 material/0 = SubResource( 3 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="FloorBG" type="MeshInstance" parent="." index="4"]
-
-transform = Transform( 100000, 0, 0, 0, 1, 0, 0, 0, 100000, 0, -1, 0 )
-layers = 1
-material_override = null
-cast_shadow = 0
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 2 )
-skeleton = NodePath("..")
-material/0 = SubResource( 3 )
-_sections_unfolded = [ "Transform", "material" ]
-
-[node name="MeshInstance" type="MeshInstance" parent="." index="5"]
+[node name="MeshInstance" type="MeshInstance" parent="." index="4"]
 
 transform = Transform( 0.84365, 0, -0.536894, 0, 1, 0, 0.536894, 0, 0.84365, 2.87389, 1.8335, 0.0363014 )
 layers = 1
