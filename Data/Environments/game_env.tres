@@ -73,8 +73,8 @@ glow_blend_mode = 2
 glow_hdr_threshold = 1.0
 glow_hdr_scale = 2.0
 glow_bicubic_upscale = false
-adjustment_enabled = false
+adjustment_enabled = true
 adjustment_brightness = 1.0
 adjustment_contrast = 1.0
-adjustment_saturation = 1.0
+adjustment_saturation = 0.85
 

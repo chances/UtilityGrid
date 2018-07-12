@@ -38,7 +38,8 @@ file_logging/log_path="user://logs/utility-grid/log.txt"
 
 [rendering]
 
+quality/shadows/filter_mode=2
 environment/default_clear_color=Color( 0.941176, 0.941176, 0.941176, 1 )
 quality/filters/msaa=1
-environment/default_environment="res://game_env.tres"
+environment/default_environment="res://Data/Environments/game_env.tres"
 quality/dynamic_fonts/use_oversampling=true
