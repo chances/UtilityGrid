@@ -71,6 +71,7 @@
     <Compile Include="Engine\Common\IHideable.cs" />
     <Compile Include="Engine\Common\IMeshObject.cs" />
     <Compile Include="Engine\Common\ITransformable.cs" />
+    <Compile Include="Engine\Common\MeshInstanceExtensions.cs" />
     <Compile Include="Engine\Common\Node.cs" />
     <Compile Include="Engine\Common\NodeExtensions.cs" />
     <Compile Include="Engine\Common\ProcessMode.cs" />
