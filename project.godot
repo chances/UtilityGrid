@@ -1,0 +1,45 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=3
+
+[application]
+
+config/name="Utility Grid"
+run/main_scene="res://Game/Game.tscn"
+config/icon="res://icon.png"
+config/quit_on_go_back=false
+
+[debug]
+
+settings/fps/force_fps=60
+
+[display]
+
+window/size/width=800
+
+[input]
+
+camera_rotate=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+camera_zoom_in=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":4,"pressed":false,"doubleclick":false,"script":null)
+ ]
+camera_zoom_out=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":5,"pressed":false,"doubleclick":false,"script":null)
+ ]
+
+[logging]
+
+file_logging/log_path="user://logs/utility-grid/log.txt"
+
+[rendering]
+
+quality/shadows/filter_mode=2
+environment/default_clear_color=Color( 0.941176, 0.941176, 0.941176, 1 )
+quality/filters/msaa=1
+environment/default_environment="res://Data/Environments/game_env.tres"
+quality/dynamic_fonts/use_oversampling=true
