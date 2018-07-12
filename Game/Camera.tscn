@@ -7,6 +7,7 @@ script/source = "extends Spatial
 const PAN_SPEED = 0.25
 const PAN_TWEEN_DURATION = 0.3
 
+const MIN_ORBIT = -0.13
 const ORBIT_SPEED = 0.02
 const ORBIT_SPEED_MAC = 0.2
 
@@ -85,7 +86,7 @@ func pan(x, y, speed):
 
 func orbit(pitch, yaw, speed):
 	rotate_y(pitch * speed)
-	$Yaw.rotation.x = clamp($Yaw.rotation.x + (yaw * speed), -(PI / 2), -0.05)
+	$Yaw.rotation.x = clamp($Yaw.rotation.x + (yaw * speed), -(PI / 2), MIN_ORBIT)
 
 onready var camera = $Yaw/Camera
 
