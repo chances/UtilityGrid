@@ -45,7 +45,11 @@ namespace UtilityGrid.Game
             };
             _material.SetShaderParam("color", Green);
 
-            GenerateBuildings(8, 3, 8, 4, 2);
+            var height = 0.375f;
+
+            GenerateBuildings(15, 5, 9, height, 6);
+
+            GetParentSpatial().GetNode<Spatial>("Building").Translate(new Vector3(0, height, 0));
         }
 
         private void GenerateBuildings(int amount, int rowAmount, float footprintSize, float height, float spacing)
@@ -69,7 +73,7 @@ namespace UtilityGrid.Game
                 var instance = new MeshInstance()
                 {
                     Mesh = mesh,
-                    Translation = new Vector3(xPos, 0, yPos),
+                    Translation = new Vector3(xPos, height / 2, yPos),
                 };
                 AddChild(instance, true);
             }
@@ -78,7 +82,7 @@ namespace UtilityGrid.Game
 
             var boundsCenter = Bounds.GetCenter();
             Translate(new Vector3(boundsCenter.x, 0, boundsCenter.z));
-            RotateY(Mathf.Pi / 4 + Mathf.Pi / 8);
+            RotateY(Mathf.Pi / 4);
         }
     }
 }

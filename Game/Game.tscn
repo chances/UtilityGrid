@@ -34,7 +34,7 @@ shader = ExtResource( 2 )
 shader_param/color = Color( 0.927734, 0.359367, 0.266361, 1 )
 _sections_unfolded = [ "shader_param" ]
 
-[node name="Game" type="Spatial" index="0"]
+[node name="Game" type="Spatial"]
 
 [node name="Camera" parent="." index="0" instance=ExtResource( 1 )]
 
