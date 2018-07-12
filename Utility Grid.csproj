@@ -79,6 +79,7 @@
     <Compile Include="Engine\Common\Range.cs" />
     <Compile Include="Engine\Common\TransformExtensions.cs" />
     <Compile Include="Engine\Common\VectorExtensions.cs" />
+    <Compile Include="Game\Buildings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

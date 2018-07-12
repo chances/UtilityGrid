@@ -1,15 +1,17 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Game/Camera.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Game/Building.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Data/Shaders/Default.shader" type="Shader" id=3]
+[ext_resource path="res://Data/Shaders/Default.shader" type="Shader" id=2]
+[ext_resource path="res://Game/Building.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Game/Buildings.cs" type="Script" id=4]
 
-[sub_resource type="ShaderMaterial" id=1]
+[sub_resource type="GDScript" id=6]
 
-render_priority = 0
-shader = ExtResource( 3 )
-shader_param/color = Color( 0.927734, 0.359367, 0.266361, 1 )
-_sections_unfolded = [ "shader_param" ]
+script/source = "extends Label
+
+func _process(delta):
+	set_text(str(Engine.get_frames_per_second()) + \" FPS\")
+"
 
 [sub_resource type="PlaneMesh" id=2]
 
@@ -21,32 +23,16 @@ subdivide_depth = 0
 [sub_resource type="ShaderMaterial" id=3]
 
 render_priority = 0
-shader = ExtResource( 3 )
+shader = ExtResource( 2 )
 shader_param/color = Color( 0.945098, 0.945098, 0.945098, 1 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="ShaderMaterial" id=4]
+[sub_resource type="ShaderMaterial" id=1]
 
 render_priority = 0
-shader = ExtResource( 3 )
-shader_param/color = Color( 0.52206, 0.291367, 0.742188, 1 )
+shader = ExtResource( 2 )
+shader_param/color = Color( 0.927734, 0.359367, 0.266361, 1 )
 _sections_unfolded = [ "shader_param" ]
-
-[sub_resource type="CubeMesh" id=5]
-
-custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
-size = Vector3( 2, 2, 2 )
-subdivide_width = 0
-subdivide_height = 0
-subdivide_depth = 0
-
-[sub_resource type="GDScript" id=6]
-
-script/source = "extends Label
-
-func _process(delta):
-	set_text(str(Engine.get_frames_per_second()) + \" FPS\")
-"
 
 [node name="Game" type="Spatial" index="0"]
 
@@ -83,45 +69,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Building" parent="." index="2" instance=ExtResource( 2 )]
-
-material/0 = SubResource( 1 )
-
-[node name="Floor" type="MeshInstance" parent="." index="3"]
-
-transform = Transform( 750, 0, 0, 0, 1, 0, 0, 0, 750, 0.00180316, 0.00280583, 5.03063e-05 )
-layers = 1
-material_override = null
-cast_shadow = 0
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 2 )
-skeleton = NodePath("..")
-material/0 = SubResource( 3 )
-_sections_unfolded = [ "Transform", "material" ]
-
-[node name="MeshInstance" type="MeshInstance" parent="." index="4"]
-
-transform = Transform( 0.84365, 0, -0.536894, 0, 1, 0, 0.536894, 0, 0.84365, 2.87389, 1.8335, 0.0363014 )
-layers = 1
-material_override = SubResource( 4 )
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 5 )
-skeleton = NodePath("..")
-material/0 = null
-_sections_unfolded = [ "Geometry" ]
-
-[node name="GUI" type="Node2D" parent="." index="5"]
+[node name="GUI" type="Node2D" parent="." index="2"]
 
 [node name="FPS" type="Label" parent="GUI" index="0"]
 
@@ -143,5 +91,30 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 script = SubResource( 6 )
+
+[node name="Floor" type="MeshInstance" parent="." index="3"]
+
+transform = Transform( 750, 0, 0, 0, 1, 0, 0, 0, 750, 0.00180316, 0.00280583, 5.03063e-05 )
+layers = 1
+material_override = null
+cast_shadow = 0
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 2 )
+skeleton = NodePath("..")
+material/0 = SubResource( 3 )
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="Building" parent="." index="4" instance=ExtResource( 3 )]
+
+material/0 = SubResource( 1 )
+
+[node name="Buildings" type="Spatial" parent="." index="5"]
+
+script = ExtResource( 4 )
 
 

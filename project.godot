@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="Utility Grid"
-run/main_scene="res://Game/UI/MainMenu.tscn"
+run/main_scene="res://Game/Game.tscn"
 config/icon="res://icon.png"
 config/quit_on_go_back=false
 
