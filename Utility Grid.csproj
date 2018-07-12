@@ -6,11 +6,12 @@
     <ProjectGuid>{552380B7-2A36-42E1-9E65-575A61490F8E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <OutputPath>.mono/temp/bin/$(Configuration)</OutputPath>
-    <RootNamespace>Utility Grid</RootNamespace>
+    <RootNamespace>UtilityGrid</RootNamespace>
     <AssemblyName>Utility Grid</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <BaseIntermediateOutputPath>.mono/temp/obj</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)/$(Configuration)</IntermediateOutputPath>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,10 +47,43 @@
       <HintPath>$(ProjectDir)/.mono/assemblies/GodotSharpEditor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325">
+      <HintPath>packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LiteGuard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>packages\LiteGuard.2.0.1\lib\netstandard2.0\LiteGuard.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Reactive, Version=4.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263">
+      <HintPath>packages\System.Reactive.4.0.0\lib\net46\System.Reactive.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\Common\BasisExtensions.cs" />
+    <Compile Include="Engine\Common\IActivatable.cs" />
+    <Compile Include="Engine\Common\IBounded.cs" />
+    <Compile Include="Engine\Common\IDirectional.cs" />
+    <Compile Include="Engine\Common\IDisposableCollector.cs" />
+    <Compile Include="Engine\Common\IGameLoopAware.cs" />
+    <Compile Include="Engine\Common\IHideable.cs" />
+    <Compile Include="Engine\Common\IMeshObject.cs" />
+    <Compile Include="Engine\Common\ITransformable.cs" />
+    <Compile Include="Engine\Common\Node.cs" />
+    <Compile Include="Engine\Common\NodeExtensions.cs" />
+    <Compile Include="Engine\Common\ProcessMode.cs" />
+    <Compile Include="Engine\Common\Range.cs" />
+    <Compile Include="Engine\Common\TransformExtensions.cs" />
+    <Compile Include="Engine\Common\VectorExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Game\UI" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
