@@ -3,3 +3,6 @@ solution: "Utility Grid.sln"
 
 install:
   - nuget restore 'Utility Grid.sln'
+
+script:
+  - msbuild /p:Configuration=Release 'Utility Grid.sln'
