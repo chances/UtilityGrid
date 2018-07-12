@@ -1,2 +1,5 @@
 language: csharp
 solution: "Utility Grid.sln"
+
+install:
+  - nuget restore 'Utility Grid.sln'
