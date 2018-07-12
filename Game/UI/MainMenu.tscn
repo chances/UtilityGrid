@@ -16,13 +16,13 @@ func _ready():
 
 func _new_game_pressed():
 	emit_signal(\"new_game\")
-	get_tree().change_scene(\"res://Game.tscn\")
+	get_tree().change_scene(\"res://Game/Game.tscn\")
 
 func _options_pressed():
 	emit_signal(\"options\")
 "
 
-[node name="TitleSafe" type="MarginContainer" index="0"]
+[node name="TitleSafe" type="MarginContainer"]
 
 anchor_left = 0.0
 anchor_top = 0.0
