@@ -64,7 +64,7 @@ directional_shadow_normal_bias = 0.8
 directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
-_sections_unfolded = [ "Light" ]
+_sections_unfolded = [ "Shadow" ]
 __meta__ = {
 "_edit_lock_": true
 }
@@ -113,6 +113,7 @@ _sections_unfolded = [ "Transform", "material" ]
 
 visible = false
 material/0 = SubResource( 4 )
+_sections_unfolded = [ "Transform", "material" ]
 
 [node name="Buildings" type="Spatial" parent="." index="5"]
 
