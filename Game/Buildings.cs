@@ -46,23 +46,86 @@ namespace UtilityGrid.Game
             _material.SetShaderParam("color", Green);
 
             var height = 0.375f;
+            var mesh = GenerateHouse(10, 5, 5, 1.25f);
 
-            GenerateBuildings(15, 5, 9, height, 6);
+            GenerateBuildings(mesh, 15, 5, 10, height, 6);
 
             GetParentSpatial().GetNode<Spatial>("Building").Translate(new Vector3(0, height, 0));
         }
 
-        private void GenerateBuildings(int amount, int rowAmount, float footprintSize, float height, float spacing)
+        private Mesh GenerateHouse(float length, float width, float height, float gableHeight)
+        {
+            var houseHeight = height + gableHeight;
+            var halfWidth = width / 2.0f;
+            var builder = new SurfaceTool();
+            builder.Begin(Mesh.PrimitiveType.Triangles);
+
+            // Walls
+
+            builder.AddVertex(new Vector3(0, 0, 0));
+            builder.AddVertex(new Vector3(length, 0, 0));
+            builder.AddVertex(new Vector3(length, height, 0));
+            builder.AddVertex(new Vector3(0, 0, 0));
+            builder.AddVertex(new Vector3(length, height, 0));
+            builder.AddVertex(new Vector3(0, height, 0));
+
+            builder.AddVertex(new Vector3(0, 0, 0));
+            builder.AddVertex(new Vector3(0, height, width));
+            builder.AddVertex(new Vector3(0, 0, width));
+            builder.AddVertex(new Vector3(0, 0, 0));
+            builder.AddVertex(new Vector3(0, height, 0));
+            builder.AddVertex(new Vector3(0, height, width));
+
+            builder.AddVertex(new Vector3(0, 0, width));
+            builder.AddVertex(new Vector3(length, height, width));
+            builder.AddVertex(new Vector3(length, 0, width));
+            builder.AddVertex(new Vector3(0, 0, width));
+            builder.AddVertex(new Vector3(0, height, width));
+            builder.AddVertex(new Vector3(length, height, width));
+
+            builder.AddVertex(new Vector3(length, 0, 0));
+            builder.AddVertex(new Vector3(length, 0, width));
+            builder.AddVertex(new Vector3(length, height, width));
+            builder.AddVertex(new Vector3(length, 0, 0));
+            builder.AddVertex(new Vector3(length, height, width));
+            builder.AddVertex(new Vector3(length, height, 0));
+
+            // Gables
+
+            builder.AddVertex(new Vector3(0, height, 0));
+            builder.AddVertex(new Vector3(0, houseHeight, halfWidth));
+            builder.AddVertex(new Vector3(0, height, width));
+
+            builder.AddVertex(new Vector3(length, height, 0));
+            builder.AddVertex(new Vector3(length, height, width));
+            builder.AddVertex(new Vector3(length, houseHeight, halfWidth));
+
+            // Roof
+
+            builder.AddVertex(new Vector3(0, height, 0));
+            builder.AddVertex(new Vector3(length, height, 0));
+            builder.AddVertex(new Vector3(length, houseHeight, halfWidth));
+            builder.AddVertex(new Vector3(0, height, 0));
+            builder.AddVertex(new Vector3(length, houseHeight, halfWidth));
+            builder.AddVertex(new Vector3(0, houseHeight, halfWidth));
+
+            builder.AddVertex(new Vector3(0, height, width));
+            builder.AddVertex(new Vector3(length, houseHeight, halfWidth));
+            builder.AddVertex(new Vector3(length, height, width));
+            builder.AddVertex(new Vector3(0, height, width));
+            builder.AddVertex(new Vector3(0, houseHeight, halfWidth));
+            builder.AddVertex(new Vector3(length, houseHeight, halfWidth));
+
+            builder.GenerateNormals();
+            return builder.Commit();
+        }
+
+        private void GenerateBuildings(Mesh mesh, int amount, int rowAmount, float footprintSize, float height, float spacing)
         {
             if (rowAmount > amount)
             {
                 throw new ArgumentException($"{nameof(rowAmount)} must be less than {nameof(amount)}");
             }
-
-            var mesh = new CubeMesh()
-            {
-                Size = new Vector3(footprintSize, height, footprintSize)
-            };
 
             for (var i = 0; i < amount; i++)
             {
