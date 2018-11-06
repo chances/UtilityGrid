@@ -111,6 +111,7 @@ _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Building" parent="." index="4" instance=ExtResource( 3 )]
 
+visible = false
 material/0 = SubResource( 4 )
 
 [node name="Buildings" type="Spatial" parent="." index="5"]
