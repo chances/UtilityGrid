@@ -46,7 +46,11 @@ namespace UtilityGrid.Game
             _material.SetShaderParam("color", Green);
 
             var height = 0.375f;
-            var mesh = GenerateHouse(10, 5, 5, 1.25f);
+            // House Dimensions
+            // 2.5m height (~8 feet)
+            // Minimum room footprint: 6.5 meter²
+            // Four rooms, 6.5 meter² * 4 => 26 meter², ≈ ~5.1m × ~5.1m
+            var mesh = GenerateHouse(6, 5, 2.5f, 1);
 
             GenerateBuildings(mesh, 15, 5, 10, height, 6);
 
