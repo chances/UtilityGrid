@@ -38,7 +38,13 @@ file_logging/log_path="user://logs/utility-grid/log.txt"
 
 [rendering]
 
+quality/shadow_atlas/quadrant_0_subdiv=2
+quality/shadow_atlas/quadrant_1_subdiv=3
+quality/shadow_atlas/quadrant_2_subdiv=4
+quality/shadow_atlas/quadrant_3_subdiv=5
 quality/shadows/filter_mode=2
+quality/reflections/texture_array_reflections=false
+quality/reflections/high_quality_ggx=false
 environment/default_clear_color=Color( 0.941176, 0.941176, 0.941176, 1 )
 quality/filters/msaa=1
 environment/default_environment="res://Data/Environments/game_env.tres"

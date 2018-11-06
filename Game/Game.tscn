@@ -5,7 +5,7 @@
 [ext_resource path="res://Game/Building.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Game/Buildings.cs" type="Script" id=4]
 
-[sub_resource type="GDScript" id=6]
+[sub_resource type="GDScript" id=1]
 
 script/source = "extends Label
 
@@ -27,14 +27,14 @@ shader = ExtResource( 2 )
 shader_param/color = Color( 0.945098, 0.945098, 0.945098, 1 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="ShaderMaterial" id=1]
+[sub_resource type="ShaderMaterial" id=4]
 
 render_priority = 0
 shader = ExtResource( 2 )
 shader_param/color = Color( 0.927734, 0.359367, 0.266361, 1 )
 _sections_unfolded = [ "shader_param" ]
 
-[node name="Game" type="Spatial"]
+[node name="Game" type="Spatial" index="0"]
 
 [node name="Camera" parent="." index="0" instance=ExtResource( 1 )]
 
@@ -51,7 +51,7 @@ light_bake_mode = 1
 light_cull_mask = -1
 shadow_enabled = true
 shadow_color = Color( 0, 0, 0, 1 )
-shadow_bias = 0.1
+shadow_bias = 0.05
 shadow_contact = 0.0
 shadow_reverse_cull_face = false
 editor_only = false
@@ -90,7 +90,7 @@ text = "0 FPS"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-script = SubResource( 6 )
+script = SubResource( 1 )
 
 [node name="Floor" type="MeshInstance" parent="." index="3"]
 
@@ -111,7 +111,7 @@ _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Building" parent="." index="4" instance=ExtResource( 3 )]
 
-material/0 = SubResource( 1 )
+material/0 = SubResource( 4 )
 
 [node name="Buildings" type="Spatial" parent="." index="5"]
 
