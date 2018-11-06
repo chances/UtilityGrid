@@ -52,7 +52,7 @@ light_cull_mask = -1
 shadow_enabled = true
 shadow_color = Color( 0, 0, 0, 1 )
 shadow_bias = 0.05
-shadow_contact = 0.0
+shadow_contact = 0.1
 shadow_reverse_cull_face = false
 editor_only = false
 directional_shadow_mode = 2
@@ -94,7 +94,7 @@ script = SubResource( 1 )
 
 [node name="Floor" type="MeshInstance" parent="." index="3"]
 
-transform = Transform( 750, 0, 0, 0, 1, 0, 0, 0, 750, 0.00180316, 0.00280583, 5.03063e-05 )
+transform = Transform( 750, 0, 0, 0, 1, 0, 0, 0, 750, 0, 0, 5e-05 )
 layers = 1
 material_override = null
 cast_shadow = 0

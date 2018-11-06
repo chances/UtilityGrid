@@ -38,6 +38,7 @@ file_logging/log_path="user://logs/utility-grid/log.txt"
 
 [rendering]
 
+quality/shadow_atlas/size=8192
 quality/shadow_atlas/quadrant_0_subdiv=2
 quality/shadow_atlas/quadrant_1_subdiv=3
 quality/shadow_atlas/quadrant_2_subdiv=4
