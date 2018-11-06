@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Game\UI" />
+    <Folder Include="Game\Utilities\Electricity" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
