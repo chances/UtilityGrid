@@ -17,7 +17,7 @@ config/quit_on_go_back=false
 
 [debug]
 
-settings/fps/force_fps=60
+settings/fps/force_fps=30
 
 [display]
 
