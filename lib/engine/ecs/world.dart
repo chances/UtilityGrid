@@ -9,13 +9,23 @@ class World {
 
   List<Entity> entities;
 
+  List<Entity> entitiesWith(Type componentType) {
+    var typedEntities =
+        entities.where((e) => e.hasComponentOfType(componentType));
+    if (typedEntities.isEmpty) {
+      return [];
+    }
+
+    return typedEntities.toList(growable: false);
+  }
+
   List<Entity> operableEntitiesFor(System system) {
     var operableEntities = entities.where(system.canOperateOn);
     if (operableEntities.isEmpty) {
       return [];
     }
 
-    return operableEntities;
+    return operableEntities.toList(growable: false);
   }
 
   List<Component> operableComponentsFor(System system, Type componentType) {
