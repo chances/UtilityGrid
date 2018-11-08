@@ -16,6 +16,7 @@ class _HomesState extends State<Homes> {
     var gridCells = homes.map((home) => houseWidget(home)).toList();
     gridCells.add(Container(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.add),
           Text('Add Home'),
@@ -23,7 +24,7 @@ class _HomesState extends State<Homes> {
       ),
     ));
 
-    var grid = GridView.count(
+    return GridView.count(
       primary: true,
       padding: const EdgeInsets.all(20.0),
       mainAxisSpacing: 10.0,
@@ -31,38 +32,22 @@ class _HomesState extends State<Homes> {
       crossAxisCount: 2,
       children: gridCells,
     );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              'Homes',
-              style: TextStyle(fontSize: 20.0),
-            ),
-          ),
-        ),
-        Expanded(
-          child: grid,
-        ),
-      ],
-    );
   }
 
   Widget houseWidget(ecs.Entity home) {
     House house = home.componentOfType(House);
     Power power = home.componentOfType(Power);
 
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        color: Colors.black12,
-      ),
-      padding: EdgeInsets.all(8.0),
-      child: Home(house, power),
+    return Material(
+      color: Colors.black12,
+      borderRadius: BorderRadius.all(Radius.circular(6.0)),
+      child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(6.0)),
+          onTap: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Home(house, power),
+          )),
     );
   }
 }
