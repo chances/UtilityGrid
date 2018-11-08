@@ -7,11 +7,15 @@ class World {
   static Uuid _uuid = new Uuid();
   static String generateId() => _uuid.v4();
 
-  List<Entity> entities;
+  List<Entity> _entities = [];
+  List<Entity> get entities => _entities;
 
-  List<Entity> entitiesWith(Type componentType) {
-    var typedEntities =
-        entities.where((e) => e.hasComponentOfType(componentType));
+  List<Entity> entitiesWith(List<Type> componentTypes) {
+    var typedEntities = entities.where(
+      (e) => componentTypes
+          .map((type) => e.hasComponentOfType(type))
+          .fold(true, (a, b) => a && b),
+    );
     if (typedEntities.isEmpty) {
       return [];
     }
