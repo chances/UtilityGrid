@@ -3,9 +3,9 @@ import 'package:utility_grid/engine/ecs/world.dart';
 
 abstract class System {
   final World world;
-  final List<Type> operableComponentTypes = [];
+  final List<Type> operableComponentTypes;
 
-  System(this.world);
+  System(this.world, this.operableComponentTypes);
 
   bool canOperateOn(Entity e) {
     var componentTypes = e.components.values.map((c) => c.runtimeType);
