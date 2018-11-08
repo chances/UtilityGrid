@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:utility_grid/engine/ecs.dart' as ecs;
+import 'package:utility_grid/game.dart';
 
 class World extends InheritedWidget {
   final ecs.World world = new ecs.World();
@@ -15,7 +16,14 @@ class World extends InheritedWidget {
     );
   }
 
-  World({Widget child}) : super(child: child);
+  World({Widget child}) : super(child: child) {
+    for (var i = 0; i < 5; i += 1) {
+      var home = ecs.Entity();
+      home.addComponent(House());
+      home.addComponent(Power());
+      world.entities.add(home);
+    }
+  }
 
   @override
   bool updateShouldNotify(World old) => false;
