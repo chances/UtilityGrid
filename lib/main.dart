@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utility_grid/pages.dart';
+import 'package:utility_grid/style.dart';
 
 void main() => runApp(UtilityGridGame());
 
@@ -8,10 +9,7 @@ class UtilityGridGame extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Utility Grid',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        splashColor: Colors.blueAccent,
-      ),
+      theme: Style.theme,
       home: GamePage(),
     );
   }

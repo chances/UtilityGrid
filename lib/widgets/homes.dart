@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utility_grid/engine/ecs.dart' as ecs;
 import 'package:utility_grid/game.dart';
+import 'package:utility_grid/style.dart';
 import 'package:utility_grid/widgets.dart';
 
 class Homes extends StatefulWidget {
@@ -39,13 +40,14 @@ class _HomesState extends State<Homes> {
     Power power = home.componentOfType(Power);
 
     return Material(
-      color: Colors.black12,
-      borderRadius: BorderRadius.all(Radius.circular(6.0)),
+      color: Colors.white,
+      elevation: 2.0,
+      borderRadius: Style.circularBorderRadius(),
       child: InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(6.0)),
+          borderRadius: Style.circularBorderRadius(),
           onTap: () {},
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(Style.margin),
             child: Home(house, power),
           )),
     );
@@ -83,7 +85,7 @@ class Home extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 4.0),
+                padding: const EdgeInsets.only(left: Style.marginText),
                 child: Text('/ ${housePower.minPower}'),
               )
             ],
