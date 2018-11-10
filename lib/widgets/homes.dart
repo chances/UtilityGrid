@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:utility_grid/engine/ecs.dart' as ecs;
 import 'package:utility_grid/game.dart';
 import 'package:utility_grid/style.dart';
@@ -66,29 +67,23 @@ class Home extends StatelessWidget {
       Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Icon(
-            Icons.home,
-            color: house.color,
-            size: 48,
+          Padding(
+            padding: const EdgeInsets.only(bottom: Style.margin),
+            child: Icon(
+              Icons.home,
+              color: house.color,
+              size: 48,
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.ideographic,
-            children: <Widget>[
-              Icon(Icons.power),
-              Text(
-                '${housePower.power}',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: Style.marginText),
-                child: Text('/ ${housePower.minPower}'),
-              )
-            ],
+          Meter(
+            icon: Icon(MdiIcons.powerPlug),
+            value: housePower.power,
+            minValue: housePower.minPower,
+          ),
+          Meter(
+            icon: Icon(MdiIcons.signalVariant),
+            value: 0,
+            minValue: 10,
           ),
         ],
       ),
