@@ -10,7 +10,7 @@ class UtilityGridGame extends StatelessWidget {
     return MaterialApp(
       title: 'Utility Grid',
       theme: Style.theme,
-      home: GamePage(),
+      home: MainMenuPage(),
     );
   }
 }
