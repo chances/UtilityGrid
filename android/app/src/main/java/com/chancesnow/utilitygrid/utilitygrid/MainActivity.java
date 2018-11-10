@@ -1,4 +1,4 @@
-package com.chancesnow.utilitygrid.utilitygrid;
+package com.chancesnow.utilitygrid;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
