@@ -125,8 +125,6 @@ namespace Game
             if (KeyboardState.IsKeyDown(Key.Escape))
                 Exit();
 
-            Console.WriteLine(gameTime.TotalGameTime.TotalSeconds);
-
             base.Update(gameTime);
 
             var frameTime = gameTime.ElapsedGameTime.Milliseconds;
