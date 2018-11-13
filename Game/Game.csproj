@@ -10,6 +10,6 @@
     <ProjectReference Include="..\Engine\Engine.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Veldrid.StartupUtilities" Version="4.4.0-beta1" />
+    <PackageReference Include="Veldrid.StartupUtilities" Version="4.4.0" />
   </ItemGroup>
 </Project>
