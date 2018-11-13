@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>Game</AssemblyName>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
@@ -6,6 +6,12 @@
     <OutputType>Exe</OutputType>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(OS)' == 'Unix'">
+    <Copy SourceFiles="libSDL2-2.0.so" DestinationFolder="$(OutDir)" />
+  </Target>
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish" Condition="'$(OS)' == 'Unix'">
+    <Copy SourceFiles="libSDL2-2.0.so" DestinationFolder="$(PublishDir)" />
+  </Target>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />
   </ItemGroup>
