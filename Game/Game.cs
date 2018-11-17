@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using Engine;
+using Engine.ECS;
 using Veldrid;
 using Veldrid.OpenGL;
 using Veldrid.Sdl2;
@@ -17,12 +18,11 @@ namespace Game
     public class UtilityGridGame : Engine.Game
     {
         private Sdl2Window _window;
-        private Camera _camera;
         private static CommandList _commandList;
 
         public UtilityGridGame()
         {
-            Components.Add(_camera = new Camera(this));
+            World.Add(new Entity(new []{new Camera()}));
         }
 
         protected override GraphicsDevice CreateGraphicsDevice()
@@ -93,6 +93,7 @@ namespace Game
 
         protected override void Initialize()
         {
+            // TODO: Refactor this so that Initialize isn't virtual, this Game subclass should add IResource components in the constructor
             _commandList = ResourceFactory.CreateCommandList();
 
             base.Initialize();

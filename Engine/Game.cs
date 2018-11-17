@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Engine.Components;
+using Engine.ECS;
 using Engine.Input;
+using Engine.Systems;
 using Veldrid;
 
 namespace Engine
@@ -14,7 +16,7 @@ namespace Engine
 
         protected Game()
         {
-            Components = new List<Component>();
+            World = new World();
             LimitFrameRate = true;
             DesiredFrameLengthSeconds = 1.0 / 60.0;
 
@@ -24,7 +26,7 @@ namespace Engine
             Initialize();
         }
 
-        protected ICollection<Component> Components { get; }
+        protected World World { get; }
 
         public bool IsActive { get; private set; }
         public bool LimitFrameRate { get; }
@@ -41,6 +43,9 @@ namespace Engine
 
         public virtual void Dispose()
         {
+            // Dispose all world resources
+            new ResourceDisposal(World).Operate();
+
             GraphicsDevice.Dispose();
         }
 
@@ -48,7 +53,7 @@ namespace Engine
 
         protected virtual void Initialize()
         {
-            foreach (var component in Components) component.Initialize();
+            new ResourceInitializer(World, ResourceFactory, GraphicsDevice).Operate();
         }
 
         public void Run()
@@ -94,7 +99,7 @@ namespace Engine
 
         protected virtual void Update(GameTime gameTime)
         {
-            foreach (var component in Components) component.Update(gameTime);
+            new ComponentUpdater(World).Operate(gameTime);
         }
 
         protected virtual void Render(GameTime gameTime)

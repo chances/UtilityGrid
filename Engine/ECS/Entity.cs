@@ -49,6 +49,5 @@ namespace Engine.ECS
 
         public Component GetComponent(Type type) =>
             _components.Values.FirstOrDefault(component => component.GetType() == type);
-        public Component this[Type type] => GetComponent(type);
     }
 }
