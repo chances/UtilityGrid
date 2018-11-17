@@ -1,25 +1,31 @@
-﻿using System.Numerics;
+﻿using Engine.Buffers;
 using Veldrid;
 
 namespace Engine.ECS.Components
 {
-    public class MeshData : Component, IResource
+    public class MeshData<T> : Component, IResource where T : struct, IVertexBufferDescription
     {
-        public MeshData(FrontFace frontFace = FrontFace.Clockwise,
-            PrimitiveTopology primitiveTopology = PrimitiveTopology.TriangleList)
+        public MeshData(string name, VertexBuffer<T> vertexBuffer, IndexBuffer indexBuffer,
+            FrontFace frontFace = FrontFace.Clockwise,
+            PrimitiveTopology primitiveTopology = PrimitiveTopology.TriangleList) : base(name)
         {
+            VertexBuffer = vertexBuffer;
+            IndexBuffer = indexBuffer;
             FrontFace = frontFace;
             PrimitiveTopology = primitiveTopology;
         }
 
-        public DeviceBuffer VertexBuffer { get; }
-        public DeviceBuffer IndexBuffer { get; }
+        public VertexBuffer<T> VertexBuffer { get; }
+        public IndexBuffer IndexBuffer { get; }
         public PrimitiveTopology PrimitiveTopology { get; }
         public FrontFace FrontFace { get; }
 
-        public void Initialize(ResourceFactory factory)
+        public void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
-            throw new global::System.NotImplementedException();
+            VertexBuffer.Initialize(factory, device);
+            VertexBuffer.Name = $"{Name} VBO";
+            IndexBuffer.Initialize(factory, device);
+            IndexBuffer.Name = $"{Name} IBO";
         }
 
         public void Dispose()
@@ -27,13 +33,5 @@ namespace Engine.ECS.Components
             VertexBuffer.Dispose();
             IndexBuffer.Dispose();
         }
-    }
-
-    public struct VertexPositionNormal
-    {
-        public Vector3 Position;
-        public Vector3 Normal;
-
-        public const uint SizeInBytes = 26;
     }
 }

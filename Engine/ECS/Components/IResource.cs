@@ -5,6 +5,6 @@ namespace Engine.ECS.Components
 {
     public interface IResource : IDisposable
     {
-        void Initialize(ResourceFactory factory);
+        void Initialize(ResourceFactory factory, GraphicsDevice device);
     }
 }
