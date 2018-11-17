@@ -1,6 +1,6 @@
 using System;
 
-namespace Engine.ECS.Components.Receivers
+namespace Engine.Components.Receivers
 {
     public interface IFramebufferSize
     {

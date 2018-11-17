@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +39,7 @@ namespace Engine.ECS
 
         public void Add(Component component)
         {
-            if (_components.ContainsKey(component.Name))
+            if (_components.ContainsKey(component.Name) || _components.Values.Contains(component))
                 _components[component.Name] = component;
             else
                 _components.Add(component.Name, component);

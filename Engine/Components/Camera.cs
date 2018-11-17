@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Numerics;
+using Engine.Components.Receivers;
 using Engine.ECS;
-using Engine.ECS.Components;
-using Engine.ECS.Components.Receivers;
-using Veldrid;
 
-namespace Engine
+namespace Engine.Components
 {
     public class Camera : Component, IFramebufferSize, IUpdatable
     {

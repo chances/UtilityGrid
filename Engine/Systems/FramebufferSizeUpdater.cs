@@ -1,6 +1,6 @@
 using System;
+using Engine.Components.Receivers;
 using Engine.ECS;
-using Engine.ECS.Components.Receivers;
 using Veldrid;
 
 namespace Engine.Systems

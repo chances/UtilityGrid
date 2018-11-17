@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Engine.ECS.Components;
+using Engine.Components;
 using JetBrains.Annotations;
 using LiteGuard;
 using Veldrid;

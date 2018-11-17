@@ -1,4 +1,4 @@
-﻿namespace Engine.ECS.Components
+﻿namespace Engine.Components
 {
     public interface IRenderable
     {

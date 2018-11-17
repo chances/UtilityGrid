@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
-using Engine.ECS.Components;
+using Engine.Components;
 
 namespace Engine.ECS
 {

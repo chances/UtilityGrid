@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Engine.Components;
+using Engine.Components.Receivers;
 using Engine.ECS;
-using Engine.ECS.Components;
-using Engine.ECS.Components.Receivers;
 
 namespace Engine.Input.Listeners
 {
-    public class InputListenerComponent : Component, IMouseInputReceiver, IKeyboardInputReceiver
+    public class InputListenerComponent : Component, IUpdatable, IMouseInput, IKeyboardInput
     {
+        public MouseState MouseState { private get; set; }
+        public KeyboardState KeyboardState { private get; set; }
+
         private readonly List<InputListener> _listeners;
 
         public InputListenerComponent(string name)
@@ -26,22 +29,20 @@ namespace Engine.Input.Listeners
         // TODO: Support game pad input?
 //        GamePadListener.CheckConnections();
 
-        public void Update(GameTime gameTime, MouseState mouseState)
+        public void Update(GameTime gameTime)
         {
             foreach (var mouseListener in _listeners.OfType<MouseListener>())
             {
-                mouseListener.MouseState = mouseState;
+                mouseListener.MouseState = MouseState;
                 mouseListener.Update(gameTime);
             }
-        }
 
-        public void Update(GameTime gameTime, KeyboardState keyboardState)
-        {
             foreach (var keyboardListener in _listeners.OfType<KeyboardListener>())
             {
-                keyboardListener.KeyboardState = keyboardState;
+                keyboardListener.KeyboardState = KeyboardState;
                 keyboardListener.Update(gameTime);
             }
+
         }
     }
 }

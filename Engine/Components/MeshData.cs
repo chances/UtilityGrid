@@ -1,5 +1,4 @@
 ﻿using Engine.Buffers;
-using Engine.ECS.Components;
 using Veldrid;
 
 namespace Engine.Components

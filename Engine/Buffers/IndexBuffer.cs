@@ -1,5 +1,5 @@
 using System;
-using Engine.ECS.Components;
+using Engine.Components;
 using JetBrains.Annotations;
 using LiteGuard;
 using Veldrid;
