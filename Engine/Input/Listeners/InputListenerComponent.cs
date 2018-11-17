@@ -1,43 +1,47 @@
 ﻿using System.Collections.Generic;
-using Engine.Components;
+using System.Linq;
+using Engine.ECS;
+using Engine.ECS.Components;
+using Engine.ECS.Components.Receivers;
 
 namespace Engine.Input.Listeners
 {
-    public class InputListenerComponent : Component
+    public class InputListenerComponent : Component, IMouseInputReceiver, IKeyboardInputReceiver
     {
         private readonly List<InputListener> _listeners;
 
-        public InputListenerComponent(Game game)
-            : base(game)
+        public InputListenerComponent(string name)
+            : this(name, new InputListener[0])
         {
-            _listeners = new List<InputListener>();
         }
 
-        public InputListenerComponent(Game game, params InputListener[] listeners)
-            : base(game)
+        public InputListenerComponent(string name, params InputListener[] listeners)
+            : base($"InputListener-{name}")
         {
             _listeners = new List<InputListener>(listeners);
         }
 
         public IList<InputListener> Listeners => _listeners;
 
-        public override void Update(GameTime gameTime)
+        // TODO: Support game pad input?
+//        GamePadListener.CheckConnections();
+
+        public void Update(GameTime gameTime, MouseState mouseState)
         {
-            base.Update(gameTime);
-
-            if (!Game.IsActive) return;
-            foreach (var listener in _listeners)
+            foreach (var mouseListener in _listeners.OfType<MouseListener>())
             {
-                if (listener is MouseListener mouseListener)
-                    mouseListener.MouseState = Game.MouseState;
-                if (listener is KeyboardListener keyboardListener)
-                    keyboardListener.KeyboardState = Game.KeyboardState;
-
-                listener.Update(gameTime);
+                mouseListener.MouseState = mouseState;
+                mouseListener.Update(gameTime);
             }
+        }
 
-            // TODO: Support game pad input?
-//            GamePadListener.CheckConnections();
+        public void Update(GameTime gameTime, KeyboardState keyboardState)
+        {
+            foreach (var keyboardListener in _listeners.OfType<KeyboardListener>())
+            {
+                keyboardListener.KeyboardState = keyboardState;
+                keyboardListener.Update(gameTime);
+            }
         }
     }
 }
