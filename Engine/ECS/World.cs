@@ -17,8 +17,8 @@ namespace Engine.ECS
 
         public Entity this[int index] => _entities[index];
 
-        public List<Entity> this[IEnumerable<Type> componenTypes] =>
-            _entities.Where(entity => componenTypes.All(entity.HasComponentOfType)).ToList();
+        public List<Entity> this[IEnumerable<Type> componentTypes] =>
+            _entities.Where(entity => componentTypes.All(entity.HasComponentOfType)).ToList();
 
         public void Add(Entity entity) => _entities.Add(entity);
 
