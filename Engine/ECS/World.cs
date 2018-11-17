@@ -17,16 +17,6 @@ namespace Engine.ECS
 
         public Entity this[int index] => _entities[index];
 
-        public List<Entity> this[IEnumerable<Type> componentTypes] =>
-            _entities.Where(entity => componentTypes.All(entity.HasComponentOfType)).ToList();
-
         public void Add(Entity entity) => _entities.Add(entity);
-
-        public List<Entity> EntitiesWith(IEnumerable<Type> componentTypes) => this[componentTypes];
-
-        public List<Entity> OperableEntitiesFor(System system) => _entities.Where(system.CanOperateOn).ToList();
-
-        public List<Component> OperableComponentsFor(System system, Type componentType) =>
-            OperableEntitiesFor(system).Select(entity => entity.GetComponent(componentType)).ToList();
     }
 }

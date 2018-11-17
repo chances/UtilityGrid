@@ -4,26 +4,17 @@ using Veldrid;
 
 namespace Engine.Systems
 {
-    public class ComponentUpdater : ECS.System
+    public class ComponentUpdater : RealTimeSystem
     {
-        public ComponentUpdater(World world) : base(world, new[] {typeof(IUpdatable)})
+        public ComponentUpdater(World world) : base(world)
         {
         }
 
-        private GameTime _gameTime;
-
-        public void Operate(GameTime gameTime)
+        public override void Operate(GameTime gameTime)
         {
-            _gameTime = gameTime;
-            Operate();
-        }
-
-        public override void Operate()
-        {
-            foreach (var component in World.OperableComponentsFor(this, typeof(IUpdatable)))
+            foreach (var componentToUpdate in OperableComponents)
             {
-                var componentToUpdate = (IUpdatable) component;
-                componentToUpdate.Update(_gameTime);
+                componentToUpdate.Update(gameTime);
             }
         }
     }

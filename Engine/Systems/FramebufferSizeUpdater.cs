@@ -5,21 +5,19 @@ using Veldrid;
 
 namespace Engine.Systems
 {
-    public class FramebufferSizeUpdater : ECS.System
+    public class FramebufferSizeUpdater : System<IFramebufferSize>
     {
         private readonly Framebuffer _framebuffer;
 
-        public FramebufferSizeUpdater(World world, Framebuffer framebuffer)
-            : base(world, new[] {typeof(IFramebufferSize)})
+        public FramebufferSizeUpdater(World world, Framebuffer framebuffer) : base(world)
         {
             _framebuffer = framebuffer;
         }
 
         public override void Operate()
         {
-            foreach (var component in World.OperableComponentsFor(this, typeof(IFramebufferSize)))
+            foreach (var componentToUpdate in OperableComponents)
             {
-                var componentToUpdate = (IFramebufferSize) component;
                 componentToUpdate.FramebufferSize = new Tuple<uint, uint>(_framebuffer.Width, _framebuffer.Height);
             }
         }

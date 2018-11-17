@@ -47,7 +47,6 @@ namespace Engine.ECS
 
         public bool HasComponentOfType(Type type) => _components.Values.Any(component => component.GetType() == type);
 
-        public Component GetComponent(Type type) =>
-            _components.Values.FirstOrDefault(component => component.GetType() == type);
+        public T GetComponent<T>() => _components.Values.OfType<T>().FirstOrDefault();
     }
 }

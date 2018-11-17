@@ -4,13 +4,12 @@ using Veldrid;
 
 namespace Engine.Systems
 {
-    public class ResourceInitializer : ECS.System
+    public class ResourceInitializer : System<IResource>
     {
         private readonly ResourceFactory _factory;
         private readonly GraphicsDevice _device;
 
-        public ResourceInitializer(World world, ResourceFactory factory, GraphicsDevice device)
-            : base(world, new[] {typeof(IResource)})
+        public ResourceInitializer(World world, ResourceFactory factory, GraphicsDevice device) : base(world)
         {
             _factory = factory;
             _device = device;
@@ -18,9 +17,8 @@ namespace Engine.Systems
 
         public override void Operate()
         {
-            foreach (var component in World.OperableComponentsFor(this, typeof(IResource)))
+            foreach (var resource in OperableComponents)
             {
-                var resource = (IResource) component;
                 resource.Initialize(_factory, _device);
             }
         }
