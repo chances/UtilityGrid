@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Numerics;
-using Engine.Components;
+using Engine.ECS;
+using Engine.ECS.Components;
+using Engine.ECS.Components.Receivers;
 using Veldrid;
 
 namespace Engine
 {
-    public class Camera : Component
+    public class Camera : Component, IFramebufferSize, IUpdatable
     {
-        private readonly GraphicsDevice _device;
-
         private readonly Vector3 _position = new Vector3(15, 10, 10);
         // TODO: Implement tweener from MonoGame.Extended.Tween
 //        TweeningComponent _tweener;
 
-        public Camera(Game game) : base(game)
+        public Camera() : base(nameof(Camera))
         {
-            _device = game.GraphicsDevice;
 //            _tweener = new TweeningComponent(game, new AnimationComponent(game));
         }
+
+        public Tuple<uint, uint> FramebufferSize { get; set; }
 
         public Matrix4x4 ViewMatrix
         {
@@ -37,11 +38,18 @@ namespace Engine
                 var fieldOfView = (float) Math.PI / 4.0f;
                 float nearClipPlane = 1;
                 float farClipPlane = 200;
-                var aspectRatio = _device.SwapchainFramebuffer.Width / (float) _device.SwapchainFramebuffer.Height;
+                var framebufferWidth = FramebufferSize.Item1;
+                var framebufferHeight = FramebufferSize.Item2;
+                var aspectRatio = framebufferWidth / (float) framebufferHeight;
 
                 return Matrix4x4.CreatePerspectiveFieldOfView(
                     fieldOfView, aspectRatio, nearClipPlane, farClipPlane);
             }
+        }
+
+        public void Update(GameTime time)
+        {
+            // TODO: Do tweening here with a tweener
         }
     }
 }

@@ -99,6 +99,7 @@ namespace Engine
 
         protected virtual void Update(GameTime gameTime)
         {
+            new FramebufferSizeUpdater(World, GraphicsDevice.SwapchainFramebuffer).Operate();
             new ComponentUpdater(World).Operate(gameTime);
         }
 
