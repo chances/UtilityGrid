@@ -27,5 +27,7 @@
   <ItemGroup>
     <None Remove="Content\Shaders\flat.hlsl" />
     <EmbeddedResource Include="Content\Shaders\flat.hlsl" />
+    <None Remove="Content\house.fbx" />
+    <EmbeddedResource Include="Content\house.fbx" />
   </ItemGroup>
 </Project>
