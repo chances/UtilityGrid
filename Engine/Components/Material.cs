@@ -1,5 +1,7 @@
 using Engine.Assets;
 using Engine.ECS;
+using JetBrains.Annotations;
+using LiteGuard;
 using Veldrid;
 using Veldrid.SPIRV;
 
@@ -9,24 +11,20 @@ namespace Engine.Components
     {
         private ResourceFactory _factory;
 
-        public Material(
-            string name,
-            string shaderFilename,
-            BlendStateDescription blendState,
-            DepthStencilStateDescription depthStencilState,
-            PolygonFillMode fillMode = PolygonFillMode.Solid,
-            bool depthClipEnabled = true)
-            : base(name)
+        public Material([NotNull] string name, string shaderFilename) : base(name)
         {
+            Guard.AgainstNullArgument(nameof(name), name);
+            Guard.AgainstNullArgument(nameof(shaderFilename), shaderFilename);
             ShaderFilename = shaderFilename;
-            DepthStencilState = depthStencilState;
-            FillMode = fillMode;
-            DepthClipEnabled = depthClipEnabled;
-            BlendState = blendState;
+            DepthStencilState = DefaultDepthStencilState;
+            FillMode = PolygonFillMode.Solid;
+            DepthClipEnabled = true;
+            BlendState = DefaultBlendState;
         }
 
         public static readonly DepthStencilStateDescription DefaultDepthStencilState = new DepthStencilStateDescription(
             depthTestEnabled: true, depthWriteEnabled: true, comparisonKind: ComparisonKind.LessEqual);
+        public static readonly BlendStateDescription DefaultBlendState = BlendStateDescription.SingleOverrideBlend;
 
         public string ShaderFilename { get; }
         public Shader[] Shaders { get; private set; }
