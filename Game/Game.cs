@@ -34,10 +34,12 @@ namespace Game
 
         protected override GraphicsDevice CreateGraphicsDevice()
         {
+            // TODO: Migrate this to Sdl2Native.SDL_WINDOWPOS_CENTERED
+            const int windowPositionCentered = 0x2FFF0000;
             var windowCreateInfo = new WindowCreateInfo
             {
-                X = 100,
-                Y = 100,
+                X = windowPositionCentered,
+                Y = windowPositionCentered,
                 WindowWidth = 960,
                 WindowHeight = 540,
                 WindowTitle = "Utility Grid"
