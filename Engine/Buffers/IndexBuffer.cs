@@ -6,10 +6,9 @@ using Veldrid;
 
 namespace Engine.Buffers
 {
-    public class IndexBuffer : IResource
+    public class IndexBuffer : Buffer, IResource
     {
         private readonly ushort[] _indexData;
-        private DeviceBuffer _buffer;
 
         public IndexBuffer([NotNull] ushort[] indexData)
         {
@@ -19,12 +18,6 @@ namespace Engine.Buffers
                 throw new ArgumentException("Given index data must not be empty.", nameof(indexData));
             }
             _indexData = indexData;
-        }
-
-        public string Name
-        {
-            get => _buffer.Name;
-            set => _buffer.Name = value;
         }
 
         public void Initialize(ResourceFactory factory, GraphicsDevice device)

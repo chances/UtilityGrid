@@ -8,10 +8,9 @@ using Veldrid;
 
 namespace Engine.Buffers
 {
-    public class VertexBuffer<T> : IResource where T : struct, IVertexBufferDescription
+    public class VertexBuffer<T> : Buffer, IResource where T : struct, IVertexBufferDescription
     {
         private readonly T[] _vertexData;
-        private DeviceBuffer _buffer;
 
         public VertexBuffer([NotNull] IEnumerable<T> vertexData)
         {
@@ -22,12 +21,6 @@ namespace Engine.Buffers
                 throw new ArgumentException("Given vertex data must not be empty.", nameof(vertexData));
             }
             _vertexData = vertexDataArray;
-        }
-
-        public string Name
-        {
-            get => _buffer.Name;
-            set => _buffer.Name = value;
         }
 
         public VertexLayoutDescription LayoutDescription => _vertexData[0].LayoutDescription;
