@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using Engine;
+using Engine.Components;
 using Engine.ECS;
 using Veldrid;
 using Veldrid.OpenGL;
@@ -22,7 +23,6 @@ namespace Game
 
         public UtilityGridGame()
         {
-            World.Add(new Entity(new []{new Camera()}));
         }
 
         protected override GraphicsDevice CreateGraphicsDevice()
@@ -36,6 +36,8 @@ namespace Game
                 WindowTitle = "Utility Grid"
             };
             _window = VeldridStartup.CreateWindow(ref windowCreateInfo);
+            _window.Closing += Exit;
+            _window.Closed += Dispose;
             _window.CursorVisible = true;
 
             // TODO: Setup multisampling AA
@@ -93,10 +95,9 @@ namespace Game
 
         protected override void Initialize()
         {
-            // TODO: Refactor this so that Initialize isn't virtual, this Game subclass should add IResource components in the constructor
-            _commandList = ResourceFactory.CreateCommandList();
+            World.Add(Camera.CreateEntity());
 
-            base.Initialize();
+            _commandList = ResourceFactory.CreateCommandList();
         }
 
         public override void Dispose()

@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Numerics;
+using Engine.Buffers;
 using Engine.Components.Receivers;
 using Engine.ECS;
+using Veldrid;
 
 namespace Engine.Components
 {
-    public class Camera : Component, IFramebufferSize, IUpdatable
+    public class Camera : Component, IResource, IFramebufferSize, IUpdatable
     {
         private readonly Vector3 _position = new Vector3(15, 10, 10);
+
+        private UniformBuffer<UniformViewProjection> _viewProjUniform;
         // TODO: Implement tweener from MonoGame.Extended.Tween
 //        TweeningComponent _tweener;
 
@@ -16,7 +20,9 @@ namespace Engine.Components
 //            _tweener = new TweeningComponent(game, new AnimationComponent(game));
         }
 
-        public Tuple<uint, uint> FramebufferSize { get; set; }
+        public static Entity CreateEntity() => new Entity(new[] {new Camera()});
+
+        public Tuple<uint, uint> FramebufferSize { get; set; } = new Tuple<uint, uint>(960, 540);
 
         public Matrix4x4 ViewMatrix
         {
@@ -45,9 +51,26 @@ namespace Engine.Components
             }
         }
 
-        public void Update(GameTime time)
+        private UniformViewProjection ViewProjection =>
+            new UniformViewProjection(Matrix4x4.Multiply(ViewMatrix, ProjectionMatrix));
+
+        public void Initialize(ResourceFactory factory, GraphicsDevice device)
+        {
+            _viewProjUniform = new UniformBuffer<UniformViewProjection>(ViewProjection);
+            _viewProjUniform.Initialize(factory, device);
+        }
+
+        public void Update(GameTime gameTime)
         {
             // TODO: Do tweening here with a tweener
+
+            _viewProjUniform.UniformData = ViewProjection;
+            _viewProjUniform.Update();
+        }
+
+        public void Dispose()
+        {
+            _viewProjUniform.Dispose();
         }
     }
 }

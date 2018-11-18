@@ -12,19 +12,15 @@ namespace Engine
     public abstract class Game : IDisposable
     {
         private readonly FrameTimeAverager _frameTimeAverager = new FrameTimeAverager(0.666);
-        private GameTime _gameTime;
 
         protected Game()
         {
             World = new World();
             LimitFrameRate = true;
             DesiredFrameLengthSeconds = 1.0 / 60.0;
-
-            // ReSharper disable once VirtualMemberCallInConstructor
-            GraphicsDevice = CreateGraphicsDevice();
-            // ReSharper disable once VirtualMemberCallInConstructor
-            Initialize();
         }
+
+        private GameTime _gameTime;
 
         protected World World { get; }
 
@@ -35,30 +31,31 @@ namespace Engine
         public MouseState MouseState { get; private set; }
         public KeyboardState KeyboardState { get; private set; }
 
-        public GraphicsDevice GraphicsDevice { get; }
+        public GraphicsDevice GraphicsDevice { get; private set; }
         public ResourceFactory ResourceFactory => GraphicsDevice.ResourceFactory;
         public Framebuffer Framebuffer => GraphicsDevice.SwapchainFramebuffer;
 
         private TimeSpan TotalElapsedTime => _gameTime?.TotalGameTime ?? TimeSpan.Zero;
 
-        public virtual void Dispose()
-        {
-            // Dispose all world resources
-            new ResourceDisposal(World).Operate();
-
-            GraphicsDevice.Dispose();
-        }
-
         protected abstract GraphicsDevice CreateGraphicsDevice();
 
-        protected virtual void Initialize()
+        protected abstract void Initialize();
+
+        private void InternalInitialize()
         {
+            // Initialize all world resources
             new ResourceInitializer(World, ResourceFactory, GraphicsDevice).Operate();
         }
 
         public void Run()
         {
             IsActive = true;
+
+            GraphicsDevice = CreateGraphicsDevice();
+
+            Initialize();
+            InternalInitialize();
+
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             while (IsActive)
@@ -86,11 +83,6 @@ namespace Engine
             }
         }
 
-        protected void Exit()
-        {
-            IsActive = false;
-        }
-
         protected void ProcessInput(MouseState mouseState, KeyboardState keyboardState)
         {
             MouseState = mouseState;
@@ -106,6 +98,19 @@ namespace Engine
         protected virtual void Render(GameTime gameTime)
         {
             GraphicsDevice.SwapBuffers();
+        }
+
+        protected void Exit()
+        {
+            IsActive = false;
+        }
+
+        public virtual void Dispose()
+        {
+            // Dispose all world resources
+            new ResourceDisposal(World).Operate();
+
+            GraphicsDevice.Dispose();
         }
     }
 }
