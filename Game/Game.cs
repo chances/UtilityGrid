@@ -6,6 +6,7 @@ using Engine;
 using Engine.Assets;
 using Engine.Components;
 using Engine.Entities;
+using Game.Content;
 using Veldrid;
 using Veldrid.OpenGL;
 using Veldrid.Sdl2;
@@ -58,6 +59,7 @@ namespace Game
             AssetDirectoryPaths.Add(AssetType.Shader, "Game.Content.Shaders");
 
             World.Add(EntityFactory.Create<Camera>());
+            World.Add(EntityFactory.Create(new Material("TestMaterial", Shaders.Flat)));
 
             _commandList = ResourceFactory.CreateCommandList();
         }
