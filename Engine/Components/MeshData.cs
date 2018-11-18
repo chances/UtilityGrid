@@ -1,9 +1,10 @@
 ﻿using Engine.Buffers;
+using Engine.ECS;
 using Veldrid;
 
 namespace Engine.Components
 {
-    public class MeshData<T> : ECS.Component, IResource where T : struct, IVertexBufferDescription
+    public class MeshData<T> : Component, IResource where T : struct, IVertexBufferDescription
     {
         public MeshData(string name, VertexBuffer<T> vertexBuffer,
             FrontFace frontFace = FrontFace.Clockwise,

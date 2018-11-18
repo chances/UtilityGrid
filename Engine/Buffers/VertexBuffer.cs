@@ -10,30 +10,34 @@ namespace Engine.Buffers
 {
     public class VertexBuffer<T> : Buffer, IResource where T : struct, IVertexBufferDescription
     {
-        private readonly T[] _vertexData;
+        private readonly T[] _vertices;
 
-        public VertexBuffer([NotNull] IEnumerable<T> vertexData, [NotNull] ushort[] indices)
+        public VertexBuffer([NotNull] IEnumerable<IVertexBufferDescription> vertices, [NotNull] ushort[] indices)
         {
-            var vertexDataArray = vertexData as T[] ?? vertexData.ToArray();
-            Guard.AgainstNullArgument(nameof(vertexData), vertexDataArray);
-            if (vertexDataArray.Length == 0)
+            var verticesArray = vertices as IVertexBufferDescription[] ?? vertices.ToArray();
+            Guard.AgainstNullArgument(nameof(vertices), verticesArray);
+            if (!verticesArray.All(vertex => vertex is T))
             {
-                throw new ArgumentException("Given vertex data must not be empty.", nameof(vertexData));
+                throw new ArgumentException("Given vertices must all be of same type.", nameof(vertices));
             }
-            _vertexData = vertexDataArray;
+            if (verticesArray.Length == 0)
+            {
+                throw new ArgumentException("Given vertices must not be empty.", nameof(vertices));
+            }
+            _vertices = verticesArray.Cast<T>().ToArray();
 
             Indices = new IndexBuffer(indices);
         }
 
-        public VertexLayoutDescription LayoutDescription => _vertexData[0].LayoutDescription;
+        public VertexLayoutDescription LayoutDescription => _vertices[0].LayoutDescription;
 
         public IndexBuffer Indices { get; }
 
         public void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
-            var size = (uint) (_vertexData.Length * _vertexData[0].SizeInBytes);
+            var size = (uint) (_vertices.Length * _vertices[0].SizeInBytes);
             _buffer = factory.CreateBuffer(new BufferDescription(size, BufferUsage.VertexBuffer));
-            device.UpdateBuffer(_buffer, 0, _vertexData);
+            device.UpdateBuffer(_buffer, 0, _vertices);
 
             Indices.Initialize(factory, device);
         }

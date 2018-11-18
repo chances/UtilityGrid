@@ -16,14 +16,18 @@ namespace Engine.Buffers
             Color = color;
         }
 
-        private static readonly VertexLayoutDescription _layoutDescription = new VertexLayoutDescription(
-            new VertexElementDescription(nameof(Position), VertexElementSemantic.Position, VertexElementFormat.Float3),
-            new VertexElementDescription(nameof(Normal), VertexElementSemantic.Normal, VertexElementFormat.Float3),
-            new VertexElementDescription(nameof(Color), VertexElementSemantic.Color, VertexElementFormat.Float4));
+        public static VertexPositionNormalColor FromVertexPositionNormal(VertexPositionNormal vertex) =>
+            new VertexPositionNormalColor(vertex.Position, vertex.Normal, RgbaFloat.Grey.ToVector4());
 
         public VertexLayoutDescription LayoutDescription => _layoutDescription;
 
         // float is 4 bytes(?)
         public uint SizeInBytes => 40;
+
+        // ReSharper disable once InconsistentNaming
+        private static readonly VertexLayoutDescription _layoutDescription = new VertexLayoutDescription(
+            new VertexElementDescription(nameof(Position), VertexElementSemantic.Position, VertexElementFormat.Float3),
+            new VertexElementDescription(nameof(Normal), VertexElementSemantic.Normal, VertexElementFormat.Float3),
+            new VertexElementDescription(nameof(Color), VertexElementSemantic.Color, VertexElementFormat.Float4));
     }
 }
