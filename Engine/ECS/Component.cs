@@ -1,12 +1,14 @@
-﻿namespace Engine.ECS
+﻿using JetBrains.Annotations;
+
+namespace Engine.ECS
 {
     public abstract class Component
     {
-        protected Component(string name)
+        protected Component([CanBeNull] string name)
         {
-            Name = name;
+            Name = name ?? GetType().Name;
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
     }
 }

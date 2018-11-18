@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Engine;
 using Engine.Components;
+using Engine.Entities;
 using Veldrid;
 using Veldrid.OpenGL;
 using Veldrid.Sdl2;
@@ -53,7 +54,7 @@ namespace Game
 
         protected override void Initialize()
         {
-            World.Add(Camera.CreateEntity());
+            World.Add(EntityFactory.Create<Camera>());
 
             _commandList = ResourceFactory.CreateCommandList();
         }

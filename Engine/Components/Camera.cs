@@ -20,8 +20,6 @@ namespace Engine.Components
 //            _tweener = new TweeningComponent(game, new AnimationComponent(game));
         }
 
-        public static Entity CreateEntity() => new Entity(new[] {new Camera()});
-
         public Tuple<uint, uint> FramebufferSize { get; set; } = new Tuple<uint, uint>(960, 540);
 
         public Matrix4x4 ViewMatrix
