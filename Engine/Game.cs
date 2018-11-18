@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Engine.Components;
+using System.Reflection;
+using Engine.Assets;
 using Engine.ECS;
 using Engine.Input;
 using Engine.Systems;
@@ -11,6 +12,7 @@ namespace Engine
 {
     public abstract class Game : IDisposable
     {
+        private readonly AssetDataLoader _assetDataLoader;
         private readonly FrameTimeAverager _frameTimeAverager = new FrameTimeAverager(0.666);
 
         protected Game()
@@ -18,6 +20,8 @@ namespace Engine
             World = new World();
             LimitFrameRate = true;
             DesiredFrameLengthSeconds = 1.0 / 60.0;
+
+            _assetDataLoader = new AssetDataLoader(Assembly.GetCallingAssembly(), AssetDirectoryPaths);
         }
 
         private GameTime _gameTime;
@@ -35,6 +39,8 @@ namespace Engine
         public ResourceFactory ResourceFactory => GraphicsDevice.ResourceFactory;
         public Framebuffer Framebuffer => GraphicsDevice.SwapchainFramebuffer;
 
+        public Dictionary<AssetType, string> AssetDirectoryPaths { get; } = new Dictionary<AssetType, string>();
+
         private TimeSpan TotalElapsedTime => _gameTime?.TotalGameTime ?? TimeSpan.Zero;
 
         protected abstract GraphicsDevice CreateGraphicsDevice();
@@ -45,6 +51,7 @@ namespace Engine
         {
             // Initialize all world resources
             new ResourceInitializer(World, ResourceFactory, GraphicsDevice).Operate();
+            new ComponentAssetLoader(World, _assetDataLoader).Operate();
         }
 
         public void Run()

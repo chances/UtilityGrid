@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using Engine;
+using Engine.Assets;
 using Engine.Components;
 using Engine.Entities;
 using Veldrid;
@@ -54,6 +55,8 @@ namespace Game
 
         protected override void Initialize()
         {
+            AssetDirectoryPaths.Add(AssetType.Shader, "Game.Content.Shaders");
+
             World.Add(EntityFactory.Create<Camera>());
 
             _commandList = ResourceFactory.CreateCommandList();

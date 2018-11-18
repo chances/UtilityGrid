@@ -1,17 +1,16 @@
+using Engine.Assets;
 using Engine.ECS;
 using Veldrid;
+using Veldrid.SPIRV;
 
 namespace Engine.Components
 {
-    public class Material : Component, IResource
+    public class Material : Component, IResource, IAsset
     {
-        private readonly byte[] _shaderSource;
-        private Shader _vertexShader;
-        private Shader _fragmentShader;
+        private ResourceFactory _factory;
 
         public Material(
             string name,
-            byte[] shaderSource,
             string shaderFilename,
             BlendStateDescription blendState,
             DepthStencilStateDescription depthStencilState,
@@ -19,7 +18,6 @@ namespace Engine.Components
             bool depthClipEnabled = true)
             : base(name)
         {
-            _shaderSource = shaderSource;
             ShaderFilename = shaderFilename;
             DepthStencilState = depthStencilState;
             FillMode = fillMode;
@@ -31,7 +29,7 @@ namespace Engine.Components
             depthTestEnabled: true, depthWriteEnabled: true, comparisonKind: ComparisonKind.LessEqual);
 
         public string ShaderFilename { get; }
-        public Shader[] Shaders => new Shader[] {_vertexShader, _fragmentShader};
+        public Shader[] Shaders { get; private set; }
         public DepthStencilStateDescription DepthStencilState { get; }
         public PolygonFillMode FillMode { get; }
         public bool DepthClipEnabled { get; }
@@ -39,20 +37,24 @@ namespace Engine.Components
 
         public void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
+            _factory = factory;
+        }
+
+        public void LoadAssets(AssetDataLoader assetDataLoader)
+        {
+            var shaderSource = ShaderImporter.Instance.Import(assetDataLoader.Load(AssetType.Shader, ShaderFilename));
             // Compile shaders
-            _vertexShader = CompileShader(factory, ShaderStages.Vertex);
-            _fragmentShader = CompileShader(factory, ShaderStages.Fragment);
+            Shaders = _factory.CreateFromSpirv(
+                new ShaderDescription(ShaderStages.Vertex, shaderSource, "VS"),
+                new ShaderDescription(ShaderStages.Fragment, shaderSource, "FS"));
         }
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
-        }
-
-        private Shader CompileShader(ResourceFactory factory, ShaderStages stage)
-        {
-            var entryPoint = stage == ShaderStages.Vertex ? "VS" : "FS";
-            return factory.CreateShader(new ShaderDescription(stage, _shaderSource, entryPoint));
+            foreach (var shader in Shaders)
+            {
+                shader.Dispose();
+            }
         }
     }
 }
