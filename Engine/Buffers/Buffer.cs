@@ -11,5 +11,7 @@ namespace Engine.Buffers
             get => _buffer.Name;
             set => _buffer.Name = value;
         }
+
+        public DeviceBuffer DeviceBuffer => _buffer;
     }
 }

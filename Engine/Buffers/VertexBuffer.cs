@@ -12,20 +12,16 @@ namespace Engine.Buffers
     {
         private readonly T[] _vertices;
 
-        public VertexBuffer([NotNull] IEnumerable<IVertexBufferDescription> vertices, [NotNull] ushort[] indices)
+        public VertexBuffer([NotNull] IVertexBufferDescription[] vertices, [NotNull] ushort[] indices)
         {
-            var verticesArray = vertices as IVertexBufferDescription[] ?? vertices.ToArray();
-            Guard.AgainstNullArgument(nameof(vertices), verticesArray);
-            if (!verticesArray.All(vertex => vertex is T))
-            {
-                throw new ArgumentException("Given vertices must all be of same type.", nameof(vertices));
-            }
-            if (verticesArray.Length == 0)
+            Guard.AgainstNullArgument(nameof(vertices), vertices);
+            Guard.AgainstNullArgument(nameof(indices), indices);
+            if (vertices.Length == 0)
             {
                 throw new ArgumentException("Given vertices must not be empty.", nameof(vertices));
             }
-            _vertices = verticesArray.Cast<T>().ToArray();
 
+            _vertices = vertices.Cast<T>().ToArray();
             Indices = new IndexBuffer(indices);
         }
 
