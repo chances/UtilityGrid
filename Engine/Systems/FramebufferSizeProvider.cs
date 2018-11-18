@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using Engine.Components.Receivers;
 using Engine.ECS;
 using Veldrid;
@@ -21,7 +22,7 @@ namespace Engine.Systems
             {
                 foreach (var componentToUpdate in OperableComponents)
                 {
-                    componentToUpdate.FramebufferSize = new Tuple<uint, uint>(_framebuffer.Width, _framebuffer.Height);
+                    componentToUpdate.FramebufferSize = new Size((int) _framebuffer.Width, (int) _framebuffer.Height);
                 }
             }
 

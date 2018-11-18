@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Numerics;
 using Engine.Buffers;
 using Engine.Components.Receivers;
@@ -20,7 +21,7 @@ namespace Engine.Components
 //            _tweener = new TweeningComponent(game, new AnimationComponent(game));
         }
 
-        public Tuple<uint, uint> FramebufferSize { get; set; } = new Tuple<uint, uint>(960, 540);
+        public Size FramebufferSize { get; set; } = new Size(960, 540);
 
         public Matrix4x4 ViewMatrix
         {
@@ -40,9 +41,7 @@ namespace Engine.Components
                 var fieldOfView = (float) Math.PI / 4.0f;
                 float nearClipPlane = 1;
                 float farClipPlane = 200;
-                var framebufferWidth = FramebufferSize.Item1;
-                var framebufferHeight = FramebufferSize.Item2;
-                var aspectRatio = framebufferWidth / (float) framebufferHeight;
+                var aspectRatio = FramebufferSize.Width / (float) FramebufferSize.Height;
 
                 return Matrix4x4.CreatePerspectiveFieldOfView(
                     fieldOfView, aspectRatio, nearClipPlane, farClipPlane);

@@ -1,9 +1,9 @@
-using System;
+using System.Drawing;
 
 namespace Engine.Components.Receivers
 {
     public interface IFramebufferSize
     {
-        Tuple<uint, uint> FramebufferSize { set; }
+        Size FramebufferSize { set; }
     }
 }
