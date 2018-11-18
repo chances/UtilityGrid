@@ -5,18 +5,17 @@ namespace Engine.Components
 {
     public class MeshData<T> : ECS.Component, IResource where T : struct, IVertexBufferDescription
     {
-        public MeshData(string name, VertexBuffer<T> vertexBuffer, IndexBuffer indexBuffer,
+        public MeshData(string name, VertexBuffer<T> vertexBuffer,
             FrontFace frontFace = FrontFace.Clockwise,
             PrimitiveTopology primitiveTopology = PrimitiveTopology.TriangleList) : base(name)
         {
             VertexBuffer = vertexBuffer;
-            IndexBuffer = indexBuffer;
             FrontFace = frontFace;
             PrimitiveTopology = primitiveTopology;
         }
 
         public VertexBuffer<T> VertexBuffer { get; }
-        public IndexBuffer IndexBuffer { get; }
+        public IndexBuffer Indices => VertexBuffer.Indices;
         public PrimitiveTopology PrimitiveTopology { get; }
         public FrontFace FrontFace { get; }
 
@@ -24,14 +23,12 @@ namespace Engine.Components
         {
             VertexBuffer.Initialize(factory, device);
             VertexBuffer.Name = $"{Name} VBO";
-            IndexBuffer.Initialize(factory, device);
-            IndexBuffer.Name = $"{Name} IBO";
+            Indices.Name = $"{Name} IBO";
         }
 
         public void Dispose()
         {
             VertexBuffer.Dispose();
-            IndexBuffer.Dispose();
         }
     }
 }

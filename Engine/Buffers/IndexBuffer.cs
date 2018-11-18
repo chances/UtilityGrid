@@ -8,23 +8,23 @@ namespace Engine.Buffers
 {
     public class IndexBuffer : Buffer, IResource
     {
-        private readonly ushort[] _indexData;
+        private readonly ushort[] _indices;
 
-        public IndexBuffer([NotNull] ushort[] indexData)
+        public IndexBuffer([NotNull] ushort[] indices)
         {
-            Guard.AgainstNullArgument(nameof(indexData), indexData);
-            if (indexData.Length == 0)
+            Guard.AgainstNullArgument(nameof(indices), indices);
+            if (indices.Length == 0)
             {
-                throw new ArgumentException("Given index data must not be empty.", nameof(indexData));
+                throw new ArgumentException("Given index data must not be empty.", nameof(indices));
             }
-            _indexData = indexData;
+            _indices = indices;
         }
 
         public void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
-            var size = (uint) (_indexData.Length * sizeof(ushort));
+            var size = (uint) (_indices.Length * sizeof(ushort));
             _buffer = factory.CreateBuffer(new BufferDescription(size, BufferUsage.IndexBuffer));
-            device.UpdateBuffer(_buffer, 0, _indexData);
+            device.UpdateBuffer(_buffer, 0, _indices);
         }
 
         public void Dispose()
