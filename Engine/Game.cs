@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
@@ -98,13 +98,14 @@ namespace Engine
 
         protected virtual void Update(GameTime gameTime)
         {
-            new FramebufferSizeUpdater(World, GraphicsDevice.SwapchainFramebuffer).Operate();
+            new FramebufferSizeProvider(World, GraphicsDevice.SwapchainFramebuffer).Operate();
             new ComponentUpdater(World).Operate(gameTime);
         }
 
         protected virtual void Render(GameTime gameTime)
         {
             GraphicsDevice.SwapBuffers();
+            GraphicsDevice.WaitForIdle();
         }
 
         protected void Exit()
