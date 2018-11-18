@@ -24,4 +24,8 @@
   <ItemGroup>
     <PackageReference Include="Veldrid.StartupUtilities" Version="4.4.0" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\Shaders\flat.hlsl" />
+    <EmbeddedResource Include="Content\Shaders\flat.hlsl" />
+  </ItemGroup>
 </Project>

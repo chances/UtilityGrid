@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using Engine;
@@ -23,6 +24,10 @@ namespace Game
 
         public UtilityGridGame()
         {
+            foreach (var resourceName in Assembly.GetExecutingAssembly().GetManifestResourceNames())
+            {
+                Console.WriteLine(resourceName);
+            }
         }
 
         protected override GraphicsDevice CreateGraphicsDevice()
