@@ -42,7 +42,7 @@ namespace Engine.Components.UI
             _device = device;
             var framebuffer = device.SwapchainFramebuffer;
             _texture = factory.CreateTexture(TextureDescription.Texture2D(framebuffer.Width, framebuffer.Height,
-                1, 1, Veldrid.PixelFormat.R8_G8_B8_A8_UNorm, TextureUsage.Sampled));
+                1, 1, PixelFormat.R8_G8_B8_A8_UNorm, TextureUsage.Sampled));
             _textureView = factory.CreateTextureView(_texture);
 
             _viewProj = new UniformBuffer<UniformViewProjection>(
