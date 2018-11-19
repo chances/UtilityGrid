@@ -57,6 +57,7 @@ namespace Game
 
         protected override void Initialize()
         {
+            AssetDirectoryPaths.Add(AssetType.Model, "Game.Content.Models");
             AssetDirectoryPaths.Add(AssetType.Shader, "Game.Content.Shaders");
 
             World.Add(EntityFactory.Create<Camera>());
