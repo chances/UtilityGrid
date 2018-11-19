@@ -1,24 +1,37 @@
-﻿using Engine.Buffers;
+﻿using System.Numerics;
+using Engine.Buffers;
 using Engine.ECS;
+using JetBrains.Annotations;
 using Veldrid;
+using Veldrid.Utilities;
 
 namespace Engine.Components
 {
-    public class MeshData<T> : Component, IResource where T : struct, IVertexBufferDescription
+    public class MeshData : Component
     {
-        public MeshData(string name, VertexBuffer<T> vertexBuffer,
+        public Vector3 Center { get; }
+        public BoundingBox BoundingBox { get; }
+        public PrimitiveTopology PrimitiveTopology { get; }
+        public FrontFace FrontFace { get; }
+
+        public MeshData([CanBeNull] string name,
             FrontFace frontFace = FrontFace.Clockwise,
             PrimitiveTopology primitiveTopology = PrimitiveTopology.TriangleList) : base(name)
         {
-            VertexBuffer = vertexBuffer;
             FrontFace = frontFace;
             PrimitiveTopology = primitiveTopology;
+        }
+    }
+
+    public class MeshData<T> : MeshData, IResource where T : struct, IVertexBufferDescription
+    {
+        public MeshData(string name, VertexBuffer<T> vertexBuffer) : base(name)
+        {
+            VertexBuffer = vertexBuffer;
         }
 
         public VertexBuffer<T> VertexBuffer { get; }
         public IndexBuffer Indices => VertexBuffer.Indices;
-        public PrimitiveTopology PrimitiveTopology { get; }
-        public FrontFace FrontFace { get; }
 
         public void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
