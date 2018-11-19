@@ -4,6 +4,7 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="CairoSharp" Version="3.22.24.36" />
     <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" />
     <PackageReference Include="LiteGuard" Version="2.2.0" />
     <PackageReference Include="Veldrid" Version="4.4.0" />
