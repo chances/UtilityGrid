@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AssimpNet" Version="4.1.0" />
+    <PackageReference Include="CairoSharp" Version="3.22.24.36" />
+    <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" />
+    <PackageReference Include="LiteGuard" Version="2.2.0" />
+    <PackageReference Include="Veldrid" Version="4.4.0" />
+    <PackageReference Include="Veldrid.SPIRV" Version="1.0.2" />
+    <PackageReference Include="Veldrid.Utilities" Version="4.4.0" />
+  </ItemGroup>
+</Project>

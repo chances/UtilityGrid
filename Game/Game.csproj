@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Game</AssemblyName>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <!-- <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(OS)' == 'Unix'">
+    <Copy SourceFiles="libcairo.2.dylib" DestinationFolder="$(OutDir)" />
+  </Target>
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish" Condition="'$(OS)' == 'Unix'">
+    <Copy SourceFiles="libcairo.2.dylib" DestinationFolder="$(PublishDir)" />
+  </Target>
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(OS)' == 'Unix'">
+    <Copy SourceFiles="libSDL2-2.0.so" DestinationFolder="$(OutDir)" />
+  </Target>
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish" Condition="'$(OS)' == 'Unix'">
+    <Copy SourceFiles="libSDL2-2.0.so" DestinationFolder="$(PublishDir)" />
+  </Target> -->
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Veldrid.StartupUtilities" Version="4.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="libcairo.2.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="libSDL2-2.0.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Remove="Content\Shaders\flat.hlsl" />
+    <EmbeddedResource Include="Content\Models\house.fbx" />
+    <None Remove="Content\house.fbx" />
+    <EmbeddedResource Include="Content\Shaders\flat.hlsl" />
+  </ItemGroup>
+</Project>
