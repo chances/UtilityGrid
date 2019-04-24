@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 using Engine.Assets;
 using Engine.ECS;
 using Engine.Input;
@@ -77,6 +78,13 @@ namespace Engine
                     _gameTime = new GameTime(TotalElapsedTime + elapsed, _gameTime.ElapsedGameTime + elapsed);
                     deltaSeconds += elapsed.TotalSeconds;
                     stopwatch.Restart();
+
+                    // Don't gobble up all available cycles while waiting
+                    var deltaMilliseconds = DesiredFrameLengthSeconds * 1000.0 - deltaSeconds * 1000.0;
+                    if (deltaMilliseconds > 8)
+                        Thread.Sleep(5);
+                    else
+                        Thread.SpinWait(100);
                 }
 
                 if (deltaSeconds > DesiredFrameLengthSeconds * 1.25) _gameTime = GameTime.RunningSlowly(_gameTime);
