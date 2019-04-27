@@ -1,3 +1,4 @@
+[[vk::binding(0)]]
 cbuffer ViewProj : register(b0)
 {
     float4x4 ViewProj;
@@ -20,7 +21,7 @@ struct FragmentIn
 FragmentIn VS(VertexIn input)
 {
     FragmentIn output;
-    float4 pos = float4(input.Position, 1)
+    float4 pos = float4(input.Position, 1);
     output.Position = mul(ViewProj, pos);
     output.Normal = input.Normal;
     output.Color = input.Color;

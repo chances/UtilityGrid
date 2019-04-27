@@ -12,34 +12,30 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <!-- <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(OS)' == 'Unix'">
-    <Copy SourceFiles="libcairo.2.dylib" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish" Condition="'$(OS)' == 'Unix'">
-    <Copy SourceFiles="libcairo.2.dylib" DestinationFolder="$(PublishDir)" />
-  </Target>
-  <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="'$(OS)' == 'Unix'">
-    <Copy SourceFiles="libSDL2-2.0.so" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish" Condition="'$(OS)' == 'Unix'">
-    <Copy SourceFiles="libSDL2-2.0.so" DestinationFolder="$(PublishDir)" />
-  </Target> -->
+  <PropertyGroup>
+    <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
+    <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
+    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Veldrid.StartupUtilities" Version="4.6.1" />
   </ItemGroup>
+  <Target Name="CompileShaders" BeforeTargets="PrepareForBuild">
+    <!-- TODO: Prevent this on CI -->
+    <Exec Command="sh compile-shaders.sh" WorkingDirectory="$(ProjectDirectory)" ConsoleToMSBuild="true" Condition="'$(OS)' == 'Unix'" />
+  </Target>
   <ItemGroup>
-    <None Update="libcairo.2.dylib">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="libcairo.2.dylib" Condition="'$(IsOSX)'=='true'">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="libSDL2-2.0.so">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="libSDL2-2.0.so" Condition="'$(IsLinux)'=='true'">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Remove="Content\Shaders\flat.hlsl" />
     <EmbeddedResource Include="Content\Models\house.fbx" />
-    <None Remove="Content\house.fbx" />
-    <EmbeddedResource Include="Content\Shaders\flat.hlsl" />
+    <EmbeddedResource Include="Content\Shaders\**\*.hlsl" />
+    <EmbeddedResource Include="Content\Shaders\**\*.spirv" />
   </ItemGroup>
 </Project>
