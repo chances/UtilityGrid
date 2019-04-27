@@ -28,7 +28,7 @@
     <ProjectReference Include="..\Engine\Engine.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Veldrid.StartupUtilities" Version="4.4.0" />
+    <PackageReference Include="Veldrid.StartupUtilities" Version="4.6.1" />
   </ItemGroup>
   <ItemGroup>
     <None Update="libcairo.2.dylib">
