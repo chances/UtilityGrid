@@ -33,6 +33,19 @@ namespace Engine.Assets
         public Stream Load(AssetType type, [NotNull] string filename)
         {
             Guard.AgainstNullArgument(nameof(filename), filename);
+            if (!Exists(type, filename))
+            {
+                throw new FileNotFoundException($"{filename} not found in asset library");
+            }
+
+            var assetFilePath = $"{_assetDirectoryPaths[type]}.{filename}";
+
+            return _gameAssembly.GetManifestResourceStream(assetFilePath);
+        }
+
+        public bool Exists(AssetType type, [NotNull] string filename)
+        {
+            Guard.AgainstNullArgument(nameof(filename), filename);
             if (!_assetDirectoryPaths.ContainsKey(type))
             {
                 throw new InvalidOperationException($"{type} does not exist in the asset directory path dictionary");
@@ -40,12 +53,7 @@ namespace Engine.Assets
 
             var assetFilePath = $"{_assetDirectoryPaths[type]}.{filename}";
 
-            if (!_assetFilenames.Contains(assetFilePath))
-            {
-                throw new FileNotFoundException($"{filename} not found in asset library");
-            }
-
-            return _gameAssembly.GetManifestResourceStream(assetFilePath);
+            return _assetFilenames.Contains(assetFilePath);
         }
     }
 }
