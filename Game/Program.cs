@@ -14,7 +14,11 @@ namespace Game
         public static void Main()
         {
             using (var game = new UtilityGridGame())
+            {
                 game.Run();
+                game.Dispose();
+                Environment.Exit(0);
+            }
         }
     }
 }

@@ -44,8 +44,8 @@ namespace Game
                 WindowTitle = "Utility Grid"
             };
             _window = VeldridStartup.CreateWindow(ref windowCreateInfo);
-            _window.Closing += Exit;
-            _window.Closed += Dispose;
+            // _window.Closing += Exit; TODO: Save game if necessary?
+            _window.Closed += Exit;
             _window.CursorVisible = true;
 
             // TODO: Setup multisampling AA
