@@ -7,28 +7,22 @@ using Engine.Buffers.Layouts;
 using Engine.Components;
 using JetBrains.Annotations;
 using LiteGuard;
+using Veldrid;
 
 namespace Engine.Primitives
 {
     public class MeshBuilder
     {
-        private IVertexBufferDescription[] _vertices;
+        private IVertexBufferDescription[] _vertices = new IVertexBufferDescription[0];
         private ushort[] _indices = new ushort[0];
-
-        public MeshBuilder()
-        {
-            _vertices = null;
-        }
+        PrimitiveTopology _primitiveTopology = PrimitiveTopology.TriangleList;
 
         public MeshBuilder WithVertex([NotNull] IVertexBufferDescription vertex)
         {
             Guard.AgainstNullArgument(nameof(vertex), vertex);
 
-            return new MeshBuilder()
-            {
-                _vertices = _vertices.Append(vertex).ToArray(),
-                _indices = _indices
-            };
+            _vertices = _vertices.Append(vertex).ToArray();
+            return this;
         }
 
         public MeshBuilder WithVertices([NotNull] IEnumerable<IVertexBufferDescription> vertices)
@@ -40,31 +34,32 @@ namespace Engine.Primitives
                 throw new ArgumentException("Given vertex data must not be empty.", nameof(vertices));
             }
 
-            return new MeshBuilder()
-            {
-                _vertices = verticesArray,
-                _indices = _indices
-            };
+            _vertices = verticesArray;
+            return this;
         }
 
         public MeshBuilder WithIndices(ushort[] indices)
         {
-            return new MeshBuilder()
-            {
-                _vertices = _vertices,
-                _indices = indices
-            };
+            _indices = indices;
+            return this;
         }
 
-        public MeshBuilder WithTexturedUnitQuad()
+        public MeshBuilder WithPrimitiveTopology(PrimitiveTopology primitiveTopology)
         {
-            return WithVertices(new IVertexBufferDescription[]
+            _primitiveTopology = primitiveTopology;
+            return this;
+        }
+
+        public static MeshData TexturedUnitQuad(string name)
+        {
+            return new MeshBuilder().WithVertices(new IVertexBufferDescription[]
             {
-                new VertexPositionTexture(new Vector3(-1, -1, 0), Vector2.Zero),
-                new VertexPositionTexture(new Vector3(1, -1, 0), new Vector2(1, 0)),
-                new VertexPositionTexture(new Vector3(1, 1, 0), Vector2.One),
-                new VertexPositionTexture(new Vector3(-1, 1, 0), new Vector2(0, 1)),
-            }).WithIndices(new ushort[] {0, 1, 2, 0, 2, 3});
+                new VertexPositionTexture(new Vector3(-1, 1, 0), Vector2.Zero),
+                new VertexPositionTexture(new Vector3(1, 1, 0), new Vector2(1, 0)),
+                new VertexPositionTexture(new Vector3(-1, -1, 0), Vector2.One),
+                new VertexPositionTexture(new Vector3(1, -1, 0), new Vector2(0, 1)),
+            }).WithIndices(new ushort[] {0, 1, 2, 2, 1, 3})
+            .Build<VertexPositionTexture>(name);
         }
 
         /// <summary>
@@ -80,7 +75,7 @@ namespace Engine.Primitives
                 throw new InvalidOperationException("This builder contains zero vertices");
             }
 
-            return new MeshData<T>(name, new VertexBuffer<T>(_vertices, _indices));
+            return new MeshData<T>(name, new VertexBuffer<T>(_vertices, _indices), _primitiveTopology);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Engine.Components
     {
         public Vector3 Center { get; }
         public BoundingBox BoundingBox { get; }
-        public PrimitiveTopology PrimitiveTopology { get; }
+        public PrimitiveTopology PrimitiveTopology { get; protected set; }
         public FrontFace FrontFace { get; }
         public VertexBuffer VertexBuffer { get; protected set; }
         public IndexBuffer Indices => VertexBuffer.Indices;
@@ -27,9 +27,12 @@ namespace Engine.Components
 
     public class MeshData<T> : MeshData, IResource where T : struct, IVertexBufferDescription
     {
-        public MeshData(string name, VertexBuffer<T> vertexBuffer) : base(name)
+        public MeshData(string name,
+            VertexBuffer<T> vertexBuffer,
+            PrimitiveTopology primitiveTopology = PrimitiveTopology.TriangleList) : base(name)
         {
             VertexBuffer = vertexBuffer;
+            PrimitiveTopology = primitiveTopology;
         }
 
         public void Initialize(ResourceFactory factory, GraphicsDevice device)

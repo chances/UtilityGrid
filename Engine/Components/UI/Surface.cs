@@ -5,8 +5,10 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using Cairo;
 using Engine.Buffers;
+using Engine.Buffers.Layouts;
 using Engine.Components.Receivers;
 using Engine.ECS;
+using Engine.Primitives;
 using Veldrid;
 
 namespace Engine.Components.UI
@@ -23,6 +25,9 @@ namespace Engine.Components.UI
         public Surface() : base("UI Surface")
         {
         }
+
+        public static readonly MeshData Mesh =
+            MeshBuilder.TexturedUnitQuad("UI Surface Mesh");
 
         public bool Ready => _surface != null;
 

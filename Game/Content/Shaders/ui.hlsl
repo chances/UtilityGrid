@@ -13,8 +13,8 @@ struct FragmentIn
 FragmentIn VS(VertexIn input)
 {
     FragmentIn output;
-    output.TexCoordinates = input.TexCoordinates;
     output.Position = float4(input.Position.x, input.Position.y, 0, 1);
+    output.TexCoordinates = input.TexCoordinates;
     return output;
 }
 

@@ -4,14 +4,13 @@ using System.Runtime.InteropServices;
 using Engine;
 using Engine.Assets;
 using Engine.Components;
-using Engine.Components.UI;
 using Engine.Entities;
 using Game.Content;
 using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
 using Key = Engine.Input.Key;
-using MouseButton = Engine.Input.MouseButton;
+using UI = Engine.Components.UI;
 
 namespace Game
 {
@@ -65,7 +64,7 @@ namespace Game
 
             World.Add(EntityFactory.Create<Camera>());
 
-            World.Add(EntityFactory.Create(new Surface(), SurfaceMesh.Instance, uiMaterial));
+            World.Add(EntityFactory.Create(new UI.Surface(), UI.Surface.Mesh, uiMaterial));
 
             _commandList = ResourceFactory.CreateCommandList();
         }

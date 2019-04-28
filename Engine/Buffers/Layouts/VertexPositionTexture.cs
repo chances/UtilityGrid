@@ -17,7 +17,7 @@ namespace Engine.Buffers.Layouts
         private static readonly VertexLayoutDescription _layoutDescription = new VertexLayoutDescription(
             new VertexElementDescription(nameof(Position), VertexElementSemantic.Position, VertexElementFormat.Float3),
             new VertexElementDescription(nameof(TexCoordinates), VertexElementSemantic.TextureCoordinate,
-                VertexElementFormat.Float3));
+                VertexElementFormat.Float2));
 
         public VertexLayoutDescription LayoutDescription => _layoutDescription;
 
