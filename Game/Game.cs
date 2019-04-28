@@ -43,7 +43,8 @@ namespace Game
                 WindowTitle = "Utility Grid"
             };
             _window = VeldridStartup.CreateWindow(ref windowCreateInfo);
-            // _window.Closing += Exit; TODO: Save game if necessary?
+            _window.Resized += () => _framebufferSizeProvider.Update(_window.Width, _window.Height);
+            // _window.Closing += Exit; // TODO: Save game if necessary?
             _window.Closed += Exit;
             _window.CursorVisible = true;
 

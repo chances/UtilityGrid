@@ -8,28 +8,34 @@ namespace Engine.Systems
 {
     public class FramebufferSizeProvider : System<IFramebufferSize>
     {
-        private readonly Framebuffer _framebuffer;
+        private Size _size;
         private int _oldSize;
 
-        public FramebufferSizeProvider(World world, Framebuffer framebuffer) : base(world)
+        public FramebufferSizeProvider(World world, uint width, uint height) : base(world)
         {
-            _framebuffer = framebuffer;
+            Update((int) width, (int) height);
+        }
+
+        public void Update(int width, int height)
+        {
+            _size = new Size(width, height);
         }
 
         public override void Operate()
         {
             if (IsDirty)
             {
+                Console.WriteLine($"Frame size changed: {Size}");
                 foreach (var componentToUpdate in OperableComponents)
                 {
-                    componentToUpdate.FramebufferSize = new Size((int) _framebuffer.Width, (int) _framebuffer.Height);
+                    componentToUpdate.FramebufferSize = _size;
                 }
             }
 
             _oldSize = Size;
         }
 
-        private int Size => (int) (_framebuffer.Width * _framebuffer.Height);
-        private bool IsDirty => Size != _oldSize;
+        private int Size => _size.Width * _size.Height;
+        private bool IsDirty => _oldSize > 0 && Size != _oldSize;
     }
 }

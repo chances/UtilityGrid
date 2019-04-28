@@ -23,7 +23,7 @@ Texture2D SourceTexture;
 [[vk::binding(1)]]
 SamplerState SourceSampler;
 
-const bool OutputFormatSrgb = true;
+const bool OutputFormatSrgb = false;
 
 float3 LinearToSrgb(float3 linearColor)
 {

@@ -15,6 +15,7 @@ namespace Engine
     {
         private readonly AssetDataLoader _assetDataLoader;
         private Renderer _renderer;
+        protected FramebufferSizeProvider _framebufferSizeProvider;
         private readonly FrameTimeAverager _frameTimeAverager = new FrameTimeAverager(0.666);
 
         protected Game()
@@ -68,6 +69,9 @@ namespace Engine
             InitializeWorld();
 
             _renderer = new Renderer(World, ResourceFactory, Framebuffer, GraphicsDevice.SubmitCommands);
+            _framebufferSizeProvider = new FramebufferSizeProvider(
+                World, GraphicsDevice.SwapchainFramebuffer.Width, GraphicsDevice.SwapchainFramebuffer.Height
+            );
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -107,11 +111,12 @@ namespace Engine
         {
             MouseState = mouseState;
             KeyboardState = keyboardState;
+            // TODO: update input provider system for input receivers
         }
 
         protected virtual void Update(GameTime gameTime)
         {
-            new FramebufferSizeProvider(World, GraphicsDevice.SwapchainFramebuffer).Operate();
+            _framebufferSizeProvider.Operate();
             new ComponentUpdater(World).Operate(gameTime);
         }
 
