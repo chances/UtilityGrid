@@ -5,6 +5,7 @@ using Engine;
 using Engine.Assets;
 using Engine.Components;
 using Engine.Entities;
+using Engine.Primitives;
 using Game.Content;
 using Veldrid;
 using Veldrid.Sdl2;
@@ -66,6 +67,8 @@ namespace Game
             World.Add(EntityFactory.Create<Camera>());
 
             // World.Add(EntityFactory.Create(new UI.Surface(), UI.Surface.Mesh, uiMaterial));
+
+            World.Add(EntityFactory.Create(new Cube("Box").MeshData, flatMaterial));
 
             _commandList = ResourceFactory.CreateCommandList();
         }

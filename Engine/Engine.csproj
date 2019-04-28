@@ -6,6 +6,7 @@
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="CairoSharp" Version="3.22.24.36" />
+    <PackageReference Include="SolidGeometry" Version="0.3.26" />
     <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" />
     <PackageReference Include="LiteGuard" Version="2.2.0" />
     <!-- TODO: Use IOC? <PackageReference Include="SimpleInjector" Version="4.5.1" /> -->
