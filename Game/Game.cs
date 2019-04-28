@@ -65,7 +65,7 @@ namespace Game
 
             World.Add(EntityFactory.Create<Camera>());
 
-            World.Add(EntityFactory.Create(new UI.Surface(), UI.Surface.Mesh, uiMaterial));
+            // World.Add(EntityFactory.Create(new UI.Surface(), UI.Surface.Mesh, uiMaterial));
 
             _commandList = ResourceFactory.CreateCommandList();
         }
