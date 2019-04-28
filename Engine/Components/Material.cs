@@ -19,6 +19,7 @@ namespace Engine.Components
             Guard.AgainstNullArgument(nameof(shaderFilename), shaderFilename);
             ShaderFilename = shaderFilename;
             DepthStencilState = DefaultDepthStencilState;
+            CullMode = FaceCullMode.Back;
             FillMode = PolygonFillMode.Solid;
             DepthClipEnabled = true;
             BlendState = DefaultBlendState;
@@ -31,7 +32,8 @@ namespace Engine.Components
         public string ShaderFilename { get; }
         public Shader[] Shaders { get; private set; }
         public DepthStencilStateDescription DepthStencilState { get; }
-        public PolygonFillMode FillMode { get; }
+        public FaceCullMode CullMode {get; set; }
+        public PolygonFillMode FillMode { get; set; }
         public bool DepthClipEnabled { get; }
         public BlendStateDescription BlendState { get; }
 

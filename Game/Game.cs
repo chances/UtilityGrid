@@ -60,11 +60,12 @@ namespace Game
             AssetDirectoryPaths.Add(AssetType.Model, "Game.Content.Models");
             AssetDirectoryPaths.Add(AssetType.Shader, "Game.Content.Shaders");
 
-            World.Add(EntityFactory.Create<Camera>());
-            World.Add(EntityFactory.Create(new Material("FlatMaterial", Shaders.Flat)));
-            World.Add(EntityFactory.Create(new Material("UIMaterial", Shaders.UI)));
+            var flatMaterial = new Material("FlatMaterial", Shaders.Flat);
+            var uiMaterial = new Material("UIMaterial", Shaders.UI);
 
-            World.Add(EntityFactory.Create(new Surface(), SurfaceMesh.Instance));
+            World.Add(EntityFactory.Create<Camera>());
+
+            World.Add(EntityFactory.Create(new Surface(), SurfaceMesh.Instance, uiMaterial));
 
             _commandList = ResourceFactory.CreateCommandList();
         }
@@ -100,26 +101,6 @@ namespace Game
 
             var frameTime = gameTime.ElapsedGameTime.Milliseconds;
             _window.Title = $"Utility Grid - {frameTime} ms - {FramesPerSecond} fps";
-        }
-
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Render(GameTime gameTime)
-        {
-            _commandList.Begin();
-            _commandList.SetFramebuffer(Framebuffer);
-            _commandList.ClearColorTarget(0,
-                MouseState.IsButtonDown(MouseButton.Left) ? RgbaFloat.Cyan : RgbaFloat.CornflowerBlue);
-
-            // TODO: Draw geometry with the command list
-
-            _commandList.End();
-            GraphicsDevice.SubmitCommands(_commandList);
-            GraphicsDevice.WaitForIdle();
-
-            base.Render(gameTime);
         }
     }
 }

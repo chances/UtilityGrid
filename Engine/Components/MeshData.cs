@@ -13,6 +13,8 @@ namespace Engine.Components
         public BoundingBox BoundingBox { get; }
         public PrimitiveTopology PrimitiveTopology { get; }
         public FrontFace FrontFace { get; }
+        public VertexBuffer VertexBuffer { get; protected set; }
+        public IndexBuffer Indices => VertexBuffer.Indices;
 
         public MeshData([CanBeNull] string name,
             FrontFace frontFace = FrontFace.Clockwise,
@@ -30,19 +32,16 @@ namespace Engine.Components
             VertexBuffer = vertexBuffer;
         }
 
-        public VertexBuffer<T> VertexBuffer { get; }
-        public IndexBuffer Indices => VertexBuffer.Indices;
-
         public void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
-            VertexBuffer.Initialize(factory, device);
+            (VertexBuffer as VertexBuffer<T>).Initialize(factory, device);
             VertexBuffer.Name = $"{Name} VBO";
             Indices.Name = $"{Name} IBO";
         }
 
         public void Dispose()
         {
-            VertexBuffer.Dispose();
+            (VertexBuffer as VertexBuffer<T>).Dispose();
         }
     }
 }

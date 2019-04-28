@@ -8,7 +8,16 @@ using Veldrid;
 
 namespace Engine.Buffers
 {
-    public class VertexBuffer<T> : Buffer, IResource where T : struct, IVertexBufferDescription
+    public abstract class VertexBuffer : Buffer
+    {
+        public abstract VertexLayoutDescription LayoutDescription { get; }
+
+        public abstract DeviceBuffer Vertices { get; }
+
+        public IndexBuffer Indices { get; protected set; }
+    }
+
+    public class VertexBuffer<T> : VertexBuffer, IResource where T : struct, IVertexBufferDescription
     {
         private readonly T[] _vertices;
 
@@ -25,9 +34,9 @@ namespace Engine.Buffers
             Indices = new IndexBuffer(indices);
         }
 
-        public VertexLayoutDescription LayoutDescription => _vertices[0].LayoutDescription;
+        public override VertexLayoutDescription LayoutDescription => _vertices[0].LayoutDescription;
 
-        public IndexBuffer Indices { get; }
+        public override DeviceBuffer Vertices => _buffer;
 
         public void Initialize(ResourceFactory factory, GraphicsDevice device)
         {

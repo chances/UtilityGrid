@@ -20,6 +20,8 @@ namespace Engine.Buffers
             _indices = indices;
         }
 
+        public int Count => _indices.Length;
+
         public void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
             var size = (uint) (_indices.Length * sizeof(ushort));

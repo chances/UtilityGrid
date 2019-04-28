@@ -6,20 +6,11 @@ namespace Engine.Entities
     public static class EntityFactory
     {
         /// <summary>
-        /// Create a new <see cref="Entity"/> containing only a single given <see cref="Component"/> instance.
+        /// Create a new <see cref="Entity"/> containing all given <see cref="Component"/> instances.
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        public static Entity Create(Component component) => new Entity(new[] {component});
-
-        /// <summary>
-        /// Create a new <see cref="Entity"/> containing only two given <see cref="Component"/> instances.
-        /// </summary>
-        /// <param name="component1"></param>
-        /// <param name="component2"></param>
-        /// <returns></returns>
-        public static Entity Create(Component component1, Component component2) =>
-            new Entity(new[] {component1, component2});
+        public static Entity Create(params Component[] components) => new Entity(components);
 
         /// <summary>
         /// Create a new <see cref="Entity"/> containing only a single <see cref="Component"/> instance.

@@ -14,6 +14,7 @@ namespace Engine
     public abstract class Game : IDisposable
     {
         private readonly AssetDataLoader _assetDataLoader;
+        private Renderer _renderer;
         private readonly FrameTimeAverager _frameTimeAverager = new FrameTimeAverager(0.666);
 
         protected Game()
@@ -48,9 +49,11 @@ namespace Engine
 
         protected abstract void Initialize();
 
-        private void InternalInitialize()
+        /// <summary>
+        /// Initialize all world resources
+        /// </summary>
+        private void InitializeWorld()
         {
-            // Initialize all world resources
             new ResourceInitializer(World, ResourceFactory, GraphicsDevice).Operate();
             new ComponentAssetLoader(World, _assetDataLoader).Operate();
         }
@@ -62,7 +65,9 @@ namespace Engine
             GraphicsDevice = CreateGraphicsDevice();
 
             Initialize();
-            InternalInitialize();
+            InitializeWorld();
+
+            _renderer = new Renderer(World, ResourceFactory, Framebuffer, GraphicsDevice.SubmitCommands);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -110,8 +115,14 @@ namespace Engine
             new ComponentUpdater(World).Operate(gameTime);
         }
 
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected virtual void Render(GameTime gameTime)
         {
+            _renderer.Operate();
+
             GraphicsDevice.SwapBuffers();
             GraphicsDevice.WaitForIdle();
         }
@@ -126,6 +137,7 @@ namespace Engine
             // Dispose all world resources
             new ResourceDisposal(World).Operate();
 
+            _renderer.Dispose();
             GraphicsDevice.Dispose();
         }
     }

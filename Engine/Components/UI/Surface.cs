@@ -35,11 +35,14 @@ namespace Engine.Components.UI
             }
         }
 
+        public ResourceLayout ResourceLayout { get; private set; }
+
         public ResourceSet ResourceSet { get; private set; }
 
         public void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
             _device = device;
+            // TODO: Refactor this so not dependant on the GraphicsDevice ref, make use of IFramebufferSize
             var framebuffer = device.SwapchainFramebuffer;
             _texture = factory.CreateTexture(TextureDescription.Texture2D(framebuffer.Width, framebuffer.Height,
                 1, 1, PixelFormat.R8_G8_B8_A8_UNorm, TextureUsage.Sampled));
@@ -49,18 +52,19 @@ namespace Engine.Components.UI
                 new UniformViewProjection(Matrix4x4.CreateOrthographic(framebuffer.Width, framebuffer.Height, 0, 1)));
             _viewProj.Initialize(factory, device);
 
-            var uiTextureLayout = factory.CreateResourceLayout(
+            ResourceLayout = factory.CreateResourceLayout(
                 new ResourceLayoutDescription(
-                    new ResourceLayoutElementDescription(
-                        "ViewProj", ResourceKind.UniformBuffer, ShaderStages.Vertex),
+                    // TODO: Do I need a View Projection uniform for UI?
+                    // new ResourceLayoutElementDescription(
+                    //     "ViewProj", ResourceKind.UniformBuffer, ShaderStages.Vertex),
                     new ResourceLayoutElementDescription(
                         "SurfaceTexture", ResourceKind.TextureReadOnly, ShaderStages.Fragment),
                     new ResourceLayoutElementDescription(
                         "SurfaceSampler", ResourceKind.Sampler, ShaderStages.Fragment)));
 
             ResourceSet = factory.CreateResourceSet(new ResourceSetDescription(
-                uiTextureLayout,
-                _viewProj.DeviceBuffer,
+                ResourceLayout,
+                // _viewProj.DeviceBuffer,
                 _textureView,
                 device.LinearSampler));
         }
@@ -82,6 +86,29 @@ namespace Engine.Components.UI
         {
             if (!(_surface is ImageSurface surface)) return;
 
+            Draw(c => {
+                c.SetSourceRGB(1, 0, 0);
+                c.Rectangle(10, 10, 50, 10);
+                c.Fill();
+
+                c.Scale(4, 4);
+
+                c.SetSourceRGB(1, 1, 1);
+                c.SelectFontFace("Arial", FontSlant.Normal, FontWeight.Bold);
+                c.SetFontSize(12);
+                var text = "Hello, world!";
+                var te = c.TextExtents(text);
+                c.MoveTo(
+                    0.5 - te.Width / 2,
+                    0.5 - te.Height / 2);
+                // bearing has stuff to do with where glyphs are placed relative to the baseline
+                // https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-text-extents-t
+                // c.MoveTo(
+                //     0.5 - te.Width / 2 - te.XBearing + 10,
+                //     0.5 - te.Height / 2 - te.YBearing + 60);
+                c.ShowText(text);
+            });
+
             surface.Flush();
 
             var sourceData = Argb32ToRgba32(surface.Data, surface.Width, surface.Height);
@@ -91,14 +118,13 @@ namespace Engine.Components.UI
             _device?.UpdateTexture(_texture, gcHandle.AddrOfPinnedObject(), (uint) sourceData.Length, 0, 0, 0, width, height, 1, 0, 0);
             gcHandle.Free();
 
-            // Clear surface to fully transparent
-            using (var c = new Context(surface))
-            {
+            Draw(c => {
+                // Clear surface to fully transparent
                 c.Save();
                 c.Operator = Operator.Clear;
                 c.Paint();
                 c.Restore();
-            }
+            });
         }
 
         public void Dispose()
