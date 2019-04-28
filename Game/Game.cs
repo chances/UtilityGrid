@@ -61,7 +61,8 @@ namespace Game
             AssetDirectoryPaths.Add(AssetType.Shader, "Game.Content.Shaders");
 
             World.Add(EntityFactory.Create<Camera>());
-            World.Add(EntityFactory.Create(new Material("TestMaterial", Shaders.Flat)));
+            World.Add(EntityFactory.Create(new Material("FlatMaterial", Shaders.Flat)));
+            World.Add(EntityFactory.Create(new Material("UIMaterial", Shaders.UI)));
 
             World.Add(EntityFactory.Create(new Surface(), SurfaceMesh.Instance));
 

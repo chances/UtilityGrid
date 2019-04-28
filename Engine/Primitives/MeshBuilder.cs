@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Engine.Buffers;
+using Engine.Buffers.Layouts;
 using Engine.Components;
 using JetBrains.Annotations;
 using LiteGuard;

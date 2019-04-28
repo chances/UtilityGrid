@@ -4,5 +4,6 @@ namespace Game.Content
     public static class Shaders
     {
         public const string Flat = "flat.hlsl";
+        public const string UI = "ui.hlsl";
     }
 }

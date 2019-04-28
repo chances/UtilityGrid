@@ -6,6 +6,7 @@ using System.Numerics;
 using Assimp;
 using Assimp.Configs;
 using Engine.Buffers;
+using Engine.Buffers.Layouts;
 using Engine.Components;
 using Matrix4x4 = System.Numerics.Matrix4x4;
 

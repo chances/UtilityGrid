@@ -1,7 +1,7 @@
 using System.Numerics;
 using Veldrid;
 
-namespace Engine.Buffers
+namespace Engine.Buffers.Layouts
 {
     public struct VertexPositionNormalColor : IVertexBufferDescription
     {
