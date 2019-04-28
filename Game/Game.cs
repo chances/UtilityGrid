@@ -61,8 +61,7 @@ namespace Game
             AssetDirectoryPaths.Add(AssetType.Shader, "Game.Content.Shaders");
 
             World.Add(EntityFactory.Create<Camera>());
-            // TODO: Wait for https://github.com/mellinoe/veldrid-spirv/pull/2
-//            World.Add(EntityFactory.Create(new Material("TestMaterial", Shaders.Flat)));
+            World.Add(EntityFactory.Create(new Material("TestMaterial", Shaders.Flat)));
 
             World.Add(EntityFactory.Create(new Surface(), SurfaceMesh.Instance));
 
