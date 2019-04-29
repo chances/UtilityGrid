@@ -12,7 +12,7 @@ namespace Engine.ECS
             World = world;
         }
 
-        private IEnumerable<Entity> OperableEntities => World;
+        protected IEnumerable<Entity> OperableEntities => World;
 
         protected IEnumerable<Component> OperableComponents => OperableEntities.SelectMany(entity => entity.Values);
 
@@ -25,8 +25,10 @@ namespace Engine.ECS
         {
         }
 
+        protected new IEnumerable<Entity> OperableEntities => World.Where(CanOperateOn);
+
         protected new IEnumerable<T> OperableComponents =>
-            World.Where(CanOperateOn).SelectMany(entity => entity.Values).OfType<T>();
+            OperableEntities.SelectMany(entity => entity.Values).OfType<T>();
 
         public override abstract void Operate();
 

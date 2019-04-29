@@ -17,7 +17,7 @@ namespace Engine.Buffers
         public IndexBuffer Indices { get; protected set; }
     }
 
-    public class VertexBuffer<T> : VertexBuffer, IResource where T : struct, IVertexBufferDescription
+    public class VertexBuffer<T> : VertexBuffer, IBufferResource where T : struct, IVertexBufferDescription
     {
         private readonly T[] _vertices;
 

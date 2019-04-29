@@ -6,7 +6,7 @@ using Veldrid;
 
 namespace Engine.Buffers
 {
-    public class IndexBuffer : Buffer, IResource
+    public class IndexBuffer : Buffer, IBufferResource
     {
         private readonly ushort[] _indices;
 

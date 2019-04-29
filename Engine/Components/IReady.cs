@@ -2,6 +2,6 @@ namespace Engine.Components
 {
     public interface IReady
     {
-        bool Ready { get; }
+        bool IsReady { get; }
     }
 }

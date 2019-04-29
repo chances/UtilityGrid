@@ -13,7 +13,7 @@ using Veldrid;
 
 namespace Engine.Components.UI
 {
-    public class Surface : Component, IFramebufferSize, IReady, IResource, IUpdatable, IResourceSet, IDrawAction
+    public class Surface : ResourceComponent, IFramebufferSize, IReady, IUpdatable, IResourceSet, IDrawAction
     {
         private GraphicsDevice _device;
         private Texture _texture;
@@ -25,12 +25,37 @@ namespace Engine.Components.UI
 
         public Surface() : base("UI Surface")
         {
+            Resources.OnInitialize = (factory, device) => {
+                _device = device;
+
+                _size = new Size(
+                    (int) device.SwapchainFramebuffer.Width,
+                    (int) device.SwapchainFramebuffer.Height
+                );
+
+                _sampler = device.LinearSampler;
+
+                ResourceLayout = factory.CreateResourceLayout(
+                    new ResourceLayoutDescription(
+                        new ResourceLayoutElementDescription(
+                            "SurfaceTexture", ResourceKind.TextureReadOnly, ShaderStages.Fragment),
+                        new ResourceLayoutElementDescription(
+                            "SurfaceSampler", ResourceKind.Sampler, ShaderStages.Fragment)));
+
+                CreateTexture();
+            };
+            Resources.OnDispose = () => {
+                _surface?.Dispose();
+                _textureView.Dispose();
+                _texture.Dispose();
+                ResourceSet.Dispose();
+            };
         }
 
         public static readonly MeshData Mesh =
             MeshBuilder.TexturedUnitQuad("UI Surface Mesh");
 
-        public bool Ready => _surface != null;
+        public bool IsReady => _surface != null;
 
         public Size FramebufferSize
         {
@@ -47,27 +72,6 @@ namespace Engine.Components.UI
 
         public ResourceSet ResourceSet { get; private set; }
 
-        public void Initialize(ResourceFactory factory, GraphicsDevice device)
-        {
-            _device = device;
-
-            _size = new Size(
-                (int) device.SwapchainFramebuffer.Width,
-                (int) device.SwapchainFramebuffer.Height
-            );
-
-            _sampler = device.LinearSampler;
-
-            ResourceLayout = factory.CreateResourceLayout(
-                new ResourceLayoutDescription(
-                    new ResourceLayoutElementDescription(
-                        "SurfaceTexture", ResourceKind.TextureReadOnly, ShaderStages.Fragment),
-                    new ResourceLayoutElementDescription(
-                        "SurfaceSampler", ResourceKind.Sampler, ShaderStages.Fragment)));
-
-            CreateTexture();
-        }
-
         public void Draw(Action<Context> drawDelegate)
         {
             using (var context = new Context(_surface))
@@ -77,11 +81,6 @@ namespace Engine.Components.UI
         }
 
         public void Update(GameTime gameTime)
-        {
-            Update();
-        }
-
-        private void Update()
         {
             if (!(_surface is ImageSurface surface)) return;
 
@@ -128,14 +127,6 @@ namespace Engine.Components.UI
                 c.Paint();
                 c.Restore();
             });
-        }
-
-        public void Dispose()
-        {
-            _surface?.Dispose();
-            _textureView.Dispose();
-            _texture.Dispose();
-            ResourceSet.Dispose();
         }
 
         private void CreateTexture()

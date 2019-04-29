@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
@@ -46,6 +47,10 @@ namespace Engine
 
         private TimeSpan TotalElapsedTime => _gameTime?.TotalGameTime ?? TimeSpan.Zero;
 
+        protected Components.Camera Camera => World
+            .FirstOrDefault(entity => entity.HasComponent<Components.Camera>())
+            ?.GetComponent<Components.Camera>() ?? null;
+
         protected abstract GraphicsDevice CreateGraphicsDevice();
 
         protected abstract void Initialize();
@@ -55,8 +60,8 @@ namespace Engine
         /// </summary>
         private void InitializeWorld()
         {
-            new ResourceInitializer(World, ResourceFactory, GraphicsDevice).Operate();
             new ComponentAssetLoader(World, _assetDataLoader).Operate();
+            new ResourceInitializer(World, ResourceFactory, GraphicsDevice).Operate();
         }
 
         public void Run()
@@ -116,6 +121,8 @@ namespace Engine
 
         protected virtual void Update(GameTime gameTime)
         {
+            new ViewProjectionProvider(World, Camera?.ViewProjectionUniform ?? null).Operate();
+            new ResourceInitializer(World, ResourceFactory, GraphicsDevice).Operate();
             _framebufferSizeProvider.Operate();
             new ComponentUpdater(World).Operate(gameTime);
         }

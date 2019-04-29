@@ -4,18 +4,23 @@ using Veldrid;
 
 namespace Engine.Buffers
 {
-    public struct UniformViewProjection : IUniformBufferDescription
+    public class UniformViewProjection : IUniformBufferDescription<Matrix4x4>
     {
-        public Matrix4x4 ViewProj;
+        public UniformBuffer<Matrix4x4> Buffer { get; private set; }
+
+        public UniformViewProjection()
+        {
+            Buffer = new UniformBuffer<Matrix4x4>();
+        }
 
         public UniformViewProjection(Matrix4x4 viewProj)
         {
-            ViewProj = viewProj;
+            Buffer = new UniformBuffer<Matrix4x4>(viewProj);
         }
 
-        public ResourceLayoutElementDescription LayoutDescription =>
-            new ResourceLayoutElementDescription("ProjView", ResourceKind.UniformBuffer, ShaderStages.Vertex);
+        public ResourceLayoutElementDescription LayoutDescription => UniformViewProjection.ResourceLayout;
 
-        public uint SizeInBytes => (uint) Unsafe.SizeOf<Matrix4x4>();
+        public static ResourceLayoutElementDescription ResourceLayout =>
+            new ResourceLayoutElementDescription("ViewProj", ResourceKind.UniformBuffer, ShaderStages.Vertex);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.Components;
 
 namespace Engine.ECS
 {
@@ -22,6 +23,8 @@ namespace Engine.ECS
         }
 
         public Guid Id { get; } = Guid.NewGuid();
+
+        public Tags Tags { get; private set; } = 0;
 
         public IEnumerator<KeyValuePair<string, Component>> GetEnumerator() => _components.GetEnumerator();
 
@@ -45,6 +48,22 @@ namespace Engine.ECS
                 _components.Add(component.Name, component);
         }
 
+        public void AddTag(Tags tag)
+        {
+            Tags |= tag;
+
+            Console.WriteLine($"{this.Id} tags:");
+            foreach (var presentTag in Enum.GetValues(typeof(Components.Tags)))
+            {
+                if (presentTag is Tags t && Tags.HasFlag(t)) {
+                    Console.WriteLine(presentTag.ToString());
+                }
+            }
+            Console.WriteLine();
+        }
+
+        public bool HasTag(Tags tag) => Tags.HasFlag(tag);
+
         public bool HasComponent<T>() => _components.Values.Any(component => component is T);
 
         public bool HasComponentsOfTypes(params Type[] types) =>
@@ -52,6 +71,8 @@ namespace Engine.ECS
                 _components.Values.Any(component => type.IsInstanceOfType(component))
             );
 
-        public T GetComponent<T>() => _components.Values.OfType<T>().FirstOrDefault();
+        public IEnumerable<T> GetComponents<T>() => _components.Values.OfType<T>();
+
+        public T GetComponent<T>() => GetComponents<T>().FirstOrDefault();
     }
 }

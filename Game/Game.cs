@@ -68,7 +68,7 @@ namespace Game
 
             // World.Add(EntityFactory.Create(new UI.Surface(), UI.Surface.Mesh, uiMaterial));
 
-            World.Add(EntityFactory.Create(new Cube("Box").MeshData, flatMaterial));
+            World.Add(EntityFactory.Create(new Buildings.Building(), new Cube("Box").MeshData, flatMaterial));
 
             _commandList = ResourceFactory.CreateCommandList();
         }

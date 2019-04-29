@@ -117,7 +117,7 @@ namespace Engine.Systems
             typeof(Material),
             typeof(MeshData),
             typeof(IResourceSet)
-        );
+        ) && entity.HasTag(Tags.Initialized);
 
         private Pipeline CreatePipeline(
             Material material, PrimitiveTopology primitiveTopology,

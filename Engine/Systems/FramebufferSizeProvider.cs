@@ -25,7 +25,6 @@ namespace Engine.Systems
         {
             if (IsDirty)
             {
-                Console.WriteLine($"Frame size changed: {Size}");
                 foreach (var componentToUpdate in OperableComponents)
                 {
                     componentToUpdate.FramebufferSize = _size;

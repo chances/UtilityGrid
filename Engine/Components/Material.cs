@@ -9,9 +9,9 @@ using Veldrid.SPIRV;
 
 namespace Engine.Components
 {
-    public class Material : Component, IResource, IAsset
+    public class Material : ResourceComponent, IAsset, IDependencies
     {
-        private ResourceFactory _factory;
+        private byte[] _vertexShaderSource, _fragmentShaderSource;
 
         public Material([NotNull] string name, string shaderFilename) : base(name)
         {
@@ -23,6 +23,24 @@ namespace Engine.Components
             FillMode = PolygonFillMode.Solid;
             DepthClipEnabled = true;
             BlendState = DefaultBlendState;
+
+            Resources.OnInitialize = (factory, _) => {
+                // Compile shaders
+                try {
+                    Shaders = factory.CreateFromSpirv(
+                        new ShaderDescription(ShaderStages.Vertex, _vertexShaderSource, "VS"),
+                        new ShaderDescription(ShaderStages.Fragment, _fragmentShaderSource, "FS"));
+                } finally {
+                    _vertexShaderSource = null;
+                    _fragmentShaderSource = null;
+                }
+            };
+            Resources.OnDispose = () => {
+                foreach (var shader in Shaders)
+                {
+                    shader.Dispose();
+                }
+            };
         }
 
         public static readonly DepthStencilStateDescription DefaultDepthStencilState = new DepthStencilStateDescription(
@@ -37,10 +55,8 @@ namespace Engine.Components
         public bool DepthClipEnabled { get; }
         public BlendStateDescription BlendState { get; }
 
-        public void Initialize(ResourceFactory factory, GraphicsDevice device)
-        {
-            _factory = factory;
-        }
+        public bool AreDependenciesSatisfied =>
+            _vertexShaderSource != null && _fragmentShaderSource != null;
 
         public void LoadAssets(AssetDataLoader assetDataLoader)
         {
@@ -54,43 +70,25 @@ namespace Engine.Components
 
             if (compiledShadersExist) {
                 // TODO: Wait for https://github.com/mellinoe/veldrid-spirv/pull/2 and remove this?
-                var vsSource = ShaderImporter.Instance.Import(assetDataLoader.Load(
+                _vertexShaderSource = ShaderImporter.Instance.Import(assetDataLoader.Load(
                     AssetType.Shader,
                     $"{shaderFilenameWithoutExtension}.vs.spirv"
                 ));
-                var fsSource = ShaderImporter.Instance.Import(assetDataLoader.Load(
+                _fragmentShaderSource = ShaderImporter.Instance.Import(assetDataLoader.Load(
                     AssetType.Shader,
                     $"{shaderFilenameWithoutExtension}.fs.spirv"
                 ));
-                // Compile shaders
-                Shaders = _factory.CreateFromSpirv(
-                    new ShaderDescription(ShaderStages.Vertex, vsSource, "VS"),
-                    new ShaderDescription(ShaderStages.Fragment, fsSource, "FS"));
             }
             else if (assetDataLoader.Exists(AssetType.Shader, ShaderFilename))
             {
-                var shaderSource = ShaderImporter.Instance.Import(assetDataLoader.Load(AssetType.Shader, ShaderFilename));
-                // Compile shaders
-                Shaders = _factory.CreateFromSpirv(
-                    new ShaderDescription(ShaderStages.Vertex, shaderSource, "VS"),
-                    new ShaderDescription(ShaderStages.Fragment, shaderSource, "FS"));
+                var shaderSource = ShaderImporter.Instance.Import(
+                    assetDataLoader.Load(AssetType.Shader, ShaderFilename)
+                );
+                _vertexShaderSource = _fragmentShaderSource = shaderSource;
             }
             else
             {
                 throw new FileNotFoundException($"Shader not found: {ShaderFilename}");
-            }
-
-            if (assetDataLoader.Exists(AssetType.Shader, ShaderFilename))
-            {
-
-            }
-        }
-
-        public void Dispose()
-        {
-            foreach (var shader in Shaders)
-            {
-                shader.Dispose();
             }
         }
     }
