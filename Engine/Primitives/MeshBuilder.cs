@@ -16,6 +16,7 @@ namespace Engine.Primitives
         private IVertexBufferDescription[] _vertices = new IVertexBufferDescription[0];
         private ushort[] _indices = new ushort[0];
         PrimitiveTopology _primitiveTopology = PrimitiveTopology.TriangleList;
+        FrontFace _frontFace = FrontFace.Clockwise;
 
         public MeshBuilder WithVertex([NotNull] IVertexBufferDescription vertex)
         {
@@ -50,6 +51,12 @@ namespace Engine.Primitives
             return this;
         }
 
+        public MeshBuilder WithFrontFaceClockwise(bool isClockwise)
+        {
+            _frontFace = isClockwise ? FrontFace.Clockwise : FrontFace.CounterClockwise;
+            return this;
+        }
+
         public static MeshData TexturedUnitQuad(string name)
         {
             return new MeshBuilder().WithVertices(new IVertexBufferDescription[]
@@ -75,7 +82,11 @@ namespace Engine.Primitives
                 throw new InvalidOperationException("This builder contains zero vertices");
             }
 
-            return new MeshData<T>(name, new VertexBuffer<T>(_vertices, _indices), _primitiveTopology);
+            return new MeshData<T>(
+                name,
+                new VertexBuffer<T>(_vertices, _indices),
+                _primitiveTopology, _frontFace
+            );
         }
     }
 }

@@ -12,16 +12,16 @@ namespace Engine.Components
         public Vector3 Center { get; }
         public BoundingBox BoundingBox { get; }
         public PrimitiveTopology PrimitiveTopology { get; protected set; }
-        public FrontFace FrontFace { get; }
+        public FrontFace FrontFace { get; protected set; }
         public VertexBuffer VertexBuffer { get; protected set; }
         public IndexBuffer Indices => VertexBuffer.Indices;
 
         public MeshData([CanBeNull] string name,
-            FrontFace frontFace = FrontFace.Clockwise,
-            PrimitiveTopology primitiveTopology = PrimitiveTopology.TriangleList) : base(name)
+            PrimitiveTopology primitiveTopology = PrimitiveTopology.TriangleList,
+            FrontFace frontFace = FrontFace.Clockwise) : base(name)
         {
-            FrontFace = frontFace;
             PrimitiveTopology = primitiveTopology;
+            FrontFace = frontFace;
         }
     }
 
@@ -29,10 +29,12 @@ namespace Engine.Components
     {
         public MeshData(string name,
             VertexBuffer<T> vertexBuffer,
-            PrimitiveTopology primitiveTopology = PrimitiveTopology.TriangleList) : base(name)
+            PrimitiveTopology primitiveTopology = PrimitiveTopology.TriangleList,
+            FrontFace frontFace = FrontFace.Clockwise) : base(name)
         {
             VertexBuffer = vertexBuffer;
             PrimitiveTopology = primitiveTopology;
+            FrontFace = frontFace;
         }
 
         public void Initialize(ResourceFactory factory, GraphicsDevice device)
