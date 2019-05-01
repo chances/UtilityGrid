@@ -51,9 +51,14 @@ namespace Game
 
             // TODO: Setup multisampling AA
 
+            var options = new GraphicsDeviceOptions(debug: false);
+            options.SwapchainDepthFormat = PixelFormat.R16_UNorm;
+            options.PreferDepthRangeZeroToOne = true;
+            options.PreferStandardClipSpaceYDirection = true;
+
             return RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-                ? VeldridStartup.CreateGraphicsDevice(_window)
-                : GraphicsDeviceUtils.CreateOpenGLGraphicsDevice(_window, new GraphicsDeviceOptions(false));
+                ? VeldridStartup.CreateGraphicsDevice(_window, options)
+                : GraphicsDeviceUtils.CreateOpenGLGraphicsDevice(_window, options);
         }
 
         protected override void Initialize()

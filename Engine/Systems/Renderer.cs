@@ -28,6 +28,7 @@ namespace Engine.Systems
             _commands.Begin();
             _commands.SetFramebuffer(_framebuffer);
             _commands.ClearColorTarget(0, RgbaFloat.Black);
+            _commands.ClearDepthStencil(1f);
 
             // TODO: Implement a keyboard provider system with IKeyboard-ish component
             // _commands.ClearColorTarget(0,
