@@ -40,6 +40,7 @@ namespace Engine.Systems
                     var mesh = entity.GetComponent<MeshData>();
                     return (
                         entity.GetComponent<Material>(),
+                        mesh.FrontFace,
                         mesh.PrimitiveTopology,
                         entity.GetComponent<IResourceSet>().ResourceLayout,
                         mesh.VertexBuffer.LayoutDescription
@@ -51,10 +52,13 @@ namespace Engine.Systems
 
                 if (!_pipelines.ContainsKey(material))
                 {
+                    var frontFace = renderable.Key.FrontFace;
                     var primitiveTopology = renderable.Key.PrimitiveTopology;
                     var resourceLayout = renderable.Key.ResourceLayout;
                     var vertexLayout = renderable.Key.LayoutDescription;
-                    var pipeline = CreatePipeline(material, primitiveTopology, resourceLayout, vertexLayout);
+                    var pipeline = CreatePipeline(material,
+                        frontFace, primitiveTopology,
+                        resourceLayout, vertexLayout);
 
                     _pipelines.Add(material, pipeline);
                 }
@@ -121,7 +125,7 @@ namespace Engine.Systems
         ) && entity.HasTag(Tags.Initialized);
 
         private Pipeline CreatePipeline(
-            Material material, PrimitiveTopology primitiveTopology,
+            Material material, FrontFace frontFace, PrimitiveTopology primitiveTopology,
             ResourceLayout resourceLayout, VertexLayoutDescription vertexLayout)
         {
             var pipelineDesc = new GraphicsPipelineDescription
@@ -131,7 +135,7 @@ namespace Engine.Systems
                 RasterizerState = new RasterizerStateDescription(
                     cullMode: material.CullMode,
                     fillMode: material.FillMode,
-                    frontFace: FrontFace.Clockwise,
+                    frontFace: frontFace,
                     depthClipEnabled: true,
                     scissorTestEnabled: false
                 ),
