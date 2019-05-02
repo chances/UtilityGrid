@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Numerics;
 using Engine.Buffers;
@@ -10,7 +10,7 @@ namespace Engine.Components
 {
     public class Camera : ResourceComponent, IFramebufferSize, IUpdatable
     {
-        private readonly Vector3 _position = new Vector3(15, 10, 10);
+        private Vector3 _position = Vector3.UnitZ * 5f;
 
         private UniformViewProjection _viewProj;
         // TODO: Implement tweener from MonoGame.Extended.Tween
@@ -35,7 +35,7 @@ namespace Engine.Components
             get
             {
                 var lookAtVector = Vector3.Zero;
-                var upVector = Vector3.UnitZ;
+                var upVector = Vector3.UnitY;
 
                 return Matrix4x4.CreateLookAt(_position, lookAtVector, upVector);
             }
@@ -45,7 +45,7 @@ namespace Engine.Components
         {
             get
             {
-                var fieldOfView = (float) Math.PI / 4.0f;
+                var fieldOfView = (float) Math.PI / 4.0f; // 45 degrees
                 float nearClipPlane = 1;
                 float farClipPlane = 200;
                 var aspectRatio = FramebufferSize.Width / (float) FramebufferSize.Height;
