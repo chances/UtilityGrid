@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Engine.Assets;
 using Engine.ECS;
 using JetBrains.Annotations;
@@ -11,6 +12,7 @@ namespace Engine.Components
 {
     public class Material : ResourceComponent, IAsset, IDependencies
     {
+        private static bool _isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
         private byte[] _vertexShaderSource, _fragmentShaderSource;
 
         public Material([NotNull] string name, string shaderFilename) : base(name)
@@ -27,9 +29,19 @@ namespace Engine.Components
             Resources.OnInitialize = (factory, _) => {
                 // Compile shaders
                 try {
-                    Shaders = factory.CreateFromSpirv(
-                        new ShaderDescription(ShaderStages.Vertex, _vertexShaderSource, "VS"),
-                        new ShaderDescription(ShaderStages.Fragment, _fragmentShaderSource, "FS"));
+                    var vsDescription = new ShaderDescription(ShaderStages.Vertex, _vertexShaderSource, "VS");
+                    var fsDescription = new ShaderDescription(ShaderStages.Fragment, _fragmentShaderSource, "FS");
+
+                    if (_isWindows)
+                    {
+                        var vs = factory.CreateShader(vsDescription);
+                        var fs = factory.CreateShader(fsDescription);
+                        Shaders = new Shader[] { fs, vs };
+                    }
+                    else
+                    {
+                        Shaders = factory.CreateFromSpirv(vsDescription, fsDescription);
+                    }
                 } finally {
                     _vertexShaderSource = null;
                     _fragmentShaderSource = null;
@@ -68,8 +80,8 @@ namespace Engine.Components
                 shadersExist && assetDataLoader.Exists(AssetType.Shader, filename)
             );
 
-            if (compiledShadersExist) {
-                // TODO: Wait for https://github.com/mellinoe/veldrid-spirv/pull/2 and remove this?
+            if (!_isWindows && compiledShadersExist) {
+                // TODO: Wait for https://github.com/mellinoe/veldrid-spirv/pull/2 and remove this? Or keep em for mobile?
                 _vertexShaderSource = ShaderImporter.Instance.Import(assetDataLoader.Load(
                     AssetType.Shader,
                     $"{shaderFilenameWithoutExtension}.vs.spirv"
