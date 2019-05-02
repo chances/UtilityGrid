@@ -31,6 +31,8 @@ namespace Game
             }
         }
 
+        public bool DebugMode { get; set; } = false;
+
         protected override GraphicsDevice CreateGraphicsDevice()
         {
             // TODO: Migrate this to Sdl2Native.SDL_WINDOWPOS_CENTERED

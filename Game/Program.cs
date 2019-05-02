@@ -15,6 +15,10 @@ namespace Game
         {
             using (var game = new UtilityGridGame())
             {
+                #if DEBUG
+                game.DebugMode = true;
+                #endif
+
                 game.Run();
                 game.Dispose();
                 Environment.Exit(0);
