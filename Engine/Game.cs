@@ -121,9 +121,11 @@ namespace Engine
 
         protected virtual void Update(GameTime gameTime)
         {
+            new KeyboardProvider(World, KeyboardState).Operate();
             new ViewProjectionProvider(World, Camera?.ViewProjectionUniform ?? null).Operate();
             new ResourceInitializer(World, ResourceFactory, GraphicsDevice).Operate();
             _framebufferSizeProvider.Operate();
+
             new ComponentUpdater(World).Operate(gameTime);
         }
 

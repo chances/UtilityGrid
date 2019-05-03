@@ -79,7 +79,7 @@ namespace Game
             var flatMaterial = new Material("FlatMaterial", Shaders.Flat);
             var uiMaterial = new Material("UIMaterial", Shaders.UI);
 
-            World.Add(EntityFactory.Create<Camera>());
+            World.Add(EntityFactory.Create<UI.OrbitCamera>());
 
             // World.Add(EntityFactory.Create(new UI.Surface(), UI.Surface.Mesh, uiMaterial));
 
