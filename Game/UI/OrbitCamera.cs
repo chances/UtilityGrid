@@ -10,6 +10,9 @@ namespace Game.UI
 {
     public class OrbitCamera : Camera, IKeyboardInput
     {
+        private const float MinZoom = 1;
+        private const float MaxZoom = 200;
+
         private const float ZoomPerSecond = 5;
         private readonly float OrbitPerSecond = 180f.DegToRad();
 
@@ -33,7 +36,7 @@ namespace Game.UI
             var zoomOut = ShouldZoomOut && !ShouldZoomIn;
 
             zoom *= zoomIn ? -1 : zoomOut ? 1 : 0;
-            Zoom = Math.Clamp(Zoom += zoom, 1f, 500);
+            Zoom = Math.Clamp(Zoom += zoom, MinZoom, MaxZoom);
 
             orbit *= ShouldOrbitLeft ? -1 : ShouldOrbitRight ? 1 : 0;
             Rotation += Quaternion.CreateFromAxisAngle(Vector3.UnitY, orbit);
