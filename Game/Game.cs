@@ -21,7 +21,6 @@ namespace Game
     public class UtilityGridGame : Engine.Game
     {
         private Sdl2Window _window;
-        private static CommandList _commandList;
 
         public UtilityGridGame()
         {
@@ -85,15 +84,6 @@ namespace Game
             // World.Add(EntityFactory.Create(new UI.Surface(), UI.Surface.Mesh, uiMaterial));
 
             World.Add(EntityFactory.Create(new Buildings.Building(), new Cube("Box").MeshData, flatMaterial));
-
-            _commandList = ResourceFactory.CreateCommandList();
-        }
-
-        public override void Dispose()
-        {
-            _commandList.Dispose();
-
-            base.Dispose();
         }
 
         /// <summary>

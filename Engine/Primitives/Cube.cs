@@ -10,8 +10,6 @@ namespace Engine.Primitives
 {
     public class Cube : IPrimitive
     {
-        private MeshData _mesh;
-
         public Cube(string name)
         {
             // var cube = Solids.Cube(1, true);
@@ -55,7 +53,7 @@ namespace Engine.Primitives
 
             var builder = new MeshBuilder();
 
-            builder.WithVertices(vertices).WithFrontFaceClockwise(false);
+            builder.WithVertices(vertices).WithFrontFaceClockwise(true);
 
             builder.WithIndices(new ushort[]
             {
@@ -67,10 +65,10 @@ namespace Engine.Primitives
                 20,21,22, 20,22,23,
             });
 
-            _mesh = builder.Build<VertexPositionNormal>(name);
+            MeshData = builder.Build<VertexPositionNormal>(name);
         }
 
-        public MeshData MeshData => _mesh;
+        public MeshData MeshData { get; private set; }
 
         private readonly IVertexBufferDescription[] vertices = new IVertexBufferDescription[]
         {
