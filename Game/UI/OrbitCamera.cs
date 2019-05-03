@@ -26,6 +26,8 @@ namespace Game.UI
 
         private bool ShouldOrbitLeft => KeyboardState.IsKeyDown(Key.Left) && !KeyboardState.IsKeyDown(Key.Right);
         private bool ShouldOrbitRight => KeyboardState.IsKeyDown(Key.Right) && !KeyboardState.IsKeyDown(Key.Left);
+        private bool ShouldOrbitUp => KeyboardState.IsKeyDown(Key.Up) && !KeyboardState.IsKeyDown(Key.Down);
+        private bool ShouldOrbitDown => KeyboardState.IsKeyDown(Key.Down) && !KeyboardState.IsKeyDown(Key.Up);
 
         public override void Update(GameTime gameTime)
         {
@@ -38,11 +40,15 @@ namespace Game.UI
             zoom *= zoomIn ? -1 : zoomOut ? 1 : 0;
             Zoom = Math.Clamp(Zoom += zoom, MinZoom, MaxZoom);
 
-            orbit *= ShouldOrbitLeft ? -1 : ShouldOrbitRight ? 1 : 0;
-            Rotation += Quaternion.CreateFromAxisAngle(Vector3.UnitY, orbit);
+            var orbitY = orbit * (ShouldOrbitLeft ? -1 : ShouldOrbitRight ? 1 : 0);
+            var orbitX = orbit * (ShouldOrbitDown ? -1 : ShouldOrbitUp ? 1 : 0);
+            Rotation += Quaternion.CreateFromAxisAngle(Vector3.UnitY, orbitY);
+
+            // TODO: Work the other way with vector math (ugh)
+            //  - Rotate the focal point and then move along oriented ray by Zoom
 
             // Update camera's absolute position
-            Position = new Vector3((float) Math.Cos(Rotation.Y) * Zoom, 0, (float) Math.Sin(Rotation.Y) * Zoom) + FocalPoint;
+            Position = new Vector3((float) Math.Cos(Rotation.Y) * Zoom, Position.Y + orbitX, (float) Math.Sin(Rotation.Y) * Zoom) + FocalPoint;
 
             base.Update(gameTime);
         }
