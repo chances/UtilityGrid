@@ -10,7 +10,7 @@ namespace Engine.Components
 {
     public class Camera : ResourceComponent, IFramebufferSize, IUpdatable
     {
-        private UniformViewProjection _viewProj;
+        private UniformMatrix _viewProj;
         // TODO: Implement tweener from MonoGame.Extended.Tween
 //        TweeningComponent _tweener;
 
@@ -57,7 +57,6 @@ namespace Engine.Components
             // TODO: Do tweening here with a tweener
 
             _viewProj.Buffer.UniformData = ViewProjection;
-            _viewProj.Buffer.Update();
         }
     }
 }

@@ -1,11 +1,17 @@
 [[vk::binding(0)]]
-cbuffer ViewProj : register(b0)
+cbuffer Model : register(b0)
+{
+    float4x4 Model;
+}
+
+[[vk::binding(1)]]
+cbuffer ViewProj : register(b1)
 {
     float4x4 ViewProj;
 }
 
-[[vk::binding(1)]]
-cbuffer Color : register(b1)
+[[vk::binding(2)]]
+cbuffer Color : register(b2)
 {
     float4 Color;
 }
@@ -26,7 +32,7 @@ FragmentIn VS(VertexIn input)
 {
     FragmentIn output;
     float4 pos = float4(input.Position, 1);
-    output.Position = mul(ViewProj, pos);
+    output.Position = mul(mul(Model, ViewProj), pos);
     output.Normal = input.Normal;
     return output;
 }
