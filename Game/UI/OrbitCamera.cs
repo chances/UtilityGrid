@@ -2,6 +2,7 @@ using System;
 using System.Numerics;
 using Engine;
 using Engine.Components;
+using Engine.Components.Geometry;
 using Engine.Components.Receivers;
 using Engine.Geometry;
 using Engine.Input;
@@ -16,9 +17,28 @@ namespace Game.UI
         private const float ZoomPerSecond = 5;
         private readonly float OrbitPerSecond = 180f.DegToRad();
 
-        public float Zoom { get; set; } = 3.0f;
+        private float _zoom = 3.0f;
+        private Vector3 _yawPitchRoll = Vector3.Zero;
+
+        public float Zoom
+        {
+            get => _zoom;
+            set
+            {
+                _zoom = value;
+                UpdatePosition(YawPitchRoll);
+            }
+        }
         public Vector3 FocalPoint { get => LookAt; set => LookAt = value; }
-        public Quaternion Rotation { get; set; } = Quaternion.Identity;
+        public Vector3 YawPitchRoll
+        {
+            get => _yawPitchRoll;
+            set
+            {
+                _yawPitchRoll = value;
+                UpdatePosition(YawPitchRoll);
+            }
+        }
         public KeyboardState KeyboardState { private get; set; }
 
         private bool ShouldZoomIn => KeyboardState.IsKeyDown(Key.Plus) || KeyboardState.IsKeyDown(Key.KeypadPlus);
@@ -31,8 +51,8 @@ namespace Game.UI
 
         public override void Update(GameTime gameTime)
         {
-            var zoom = (float) gameTime.ElapsedGameTime.TotalSeconds * ZoomPerSecond;
-            var orbit = (float) gameTime.ElapsedGameTime.TotalSeconds * OrbitPerSecond;
+            var zoom = (float)gameTime.ElapsedGameTime.TotalSeconds * ZoomPerSecond;
+            var orbit = (float)gameTime.ElapsedGameTime.TotalSeconds * OrbitPerSecond;
 
             var zoomIn = ShouldZoomIn && !ShouldZoomOut;
             var zoomOut = ShouldZoomOut && !ShouldZoomIn;
@@ -42,15 +62,25 @@ namespace Game.UI
 
             var orbitY = orbit * (ShouldOrbitLeft ? -1 : ShouldOrbitRight ? 1 : 0);
             var orbitX = orbit * (ShouldOrbitDown ? -1 : ShouldOrbitUp ? 1 : 0);
-            Rotation += Quaternion.CreateFromAxisAngle(Vector3.UnitY, orbitY);
+            YawPitchRoll += new Vector3(orbitX, orbitY, 0);
 
-            // TODO: Work the other way with vector math (ugh)
-            //  - Rotate the focal point and then move along oriented ray by Zoom
-
-            // Update camera's absolute position
-            Position = new Vector3((float) Math.Cos(Rotation.Y) * Zoom, Position.Y + orbitX, (float) Math.Sin(Rotation.Y) * Zoom) + FocalPoint;
+            if (KeyboardState.IsKeyDown(Key.Home))
+                YawPitchRoll = Vector3.Zero;
 
             base.Update(gameTime);
+        }
+
+        private void UpdatePosition(Vector3 yawPitchRoll)
+        {
+            var transformation = Matrix4x4.Identity;
+            transformation.Translation = new Vector3(0, 0, Zoom * -1);
+            transformation = Matrix4x4.Transform(transformation, Quaternion.CreateFromYawPitchRoll(
+                yawPitchRoll.Y,
+                yawPitchRoll.X,
+                yawPitchRoll.Z
+            ));
+
+            Position = Vector3.Transform(FocalPoint, transformation);
         }
     }
 }
