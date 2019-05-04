@@ -2,7 +2,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using Veldrid;
 
-namespace Engine.Buffers
+namespace Engine.Buffers.Uniforms
 {
     public class UniformViewProjection : IUniformBufferDescription<Matrix4x4>
     {

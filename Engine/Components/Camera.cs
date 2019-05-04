@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 using System.Numerics;
-using Engine.Buffers;
+using Engine.Buffers.Uniforms;
 using Engine.Components.Receivers;
 using Engine.ECS;
 using Veldrid;

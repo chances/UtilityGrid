@@ -1,6 +1,6 @@
 using System;
 using System.Numerics;
-using Engine.Buffers;
+using Engine.Buffers.Uniforms;
 using Engine.Components;
 using Engine.Components.Receivers;
 using Engine.ECS;

@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using Engine.Components;
 using Veldrid;
 
-namespace Engine.Buffers
+namespace Engine.Buffers.Uniforms
 {
     public class UniformBuffer<T> : Buffer, IBufferResource where T : struct
     {
