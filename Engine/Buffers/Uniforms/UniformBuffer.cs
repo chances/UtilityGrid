@@ -4,11 +4,10 @@ using Veldrid;
 
 namespace Engine.Buffers.Uniforms
 {
-    public class UniformBuffer<T> : Buffer, IBufferResource where T : struct
+    public class UniformBuffer<T> : Buffer where T : struct
     {
         private GraphicsDevice _device;
         private T _uniformData;
-        private bool _isInitialized = false;
 
         public UniformBuffer()
         {
@@ -26,28 +25,19 @@ namespace Engine.Buffers.Uniforms
             set
             {
                 _uniformData = value;
-                if (_isInitialized)
+                if (Initialized)
                 {
                     Update();
                 }
             }
         }
 
-        public bool IsInitialized { get => _isInitialized; }
-
-        public void Initialize(ResourceFactory factory, GraphicsDevice device)
+        public override void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
             _buffer = factory.CreateBuffer(
                 new BufferDescription((uint)Unsafe.SizeOf<T>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
             _device = device;
             Update();
-            _isInitialized = true;
-        }
-
-        public void Dispose()
-        {
-            _buffer.Dispose();
-            _isInitialized = false;
         }
 
         private void Update()

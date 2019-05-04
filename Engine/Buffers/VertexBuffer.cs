@@ -17,7 +17,7 @@ namespace Engine.Buffers
         public IndexBuffer Indices { get; protected set; }
     }
 
-    public class VertexBuffer<T> : VertexBuffer, IBufferResource where T : struct, IVertexBufferDescription
+    public class VertexBuffer<T> : VertexBuffer where T : struct, IVertexBufferDescription
     {
         private readonly T[] _vertices;
 
@@ -38,7 +38,7 @@ namespace Engine.Buffers
 
         public override DeviceBuffer Vertices => _buffer;
 
-        public void Initialize(ResourceFactory factory, GraphicsDevice device)
+        public override void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
             var size = (uint) (_vertices.Length * _vertices[0].SizeInBytes);
             _buffer = factory.CreateBuffer(new BufferDescription(size, BufferUsage.VertexBuffer));
@@ -47,9 +47,9 @@ namespace Engine.Buffers
             Indices.Initialize(factory, device);
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
-            _buffer.Dispose();
+            base.Dispose();
             Indices.Dispose();
         }
     }

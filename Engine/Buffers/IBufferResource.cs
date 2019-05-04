@@ -1,10 +1,8 @@
-using System;
-using Veldrid;
+using Engine.Components;
 
 namespace Engine.Buffers
 {
-    interface IBufferResource : IDisposable
+    interface IBufferResource : IResource
     {
-        void Initialize(ResourceFactory factory, GraphicsDevice device);
     }
 }

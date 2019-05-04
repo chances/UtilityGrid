@@ -22,10 +22,10 @@ namespace Engine.Systems
 
         private new IEnumerable<Entity> OperableEntities => World
             .Where(entity => {
-                var hasResources = (entity.HasComponent<ResourceComponent>() || entity.HasComponent<IBufferResource>());
+                var hasResources = (entity.HasComponent<IResource>());
                 var isEntityInitialized = entity.HasTag(Tags.Initialized);
-                var areAnyResourcesUninitialized = entity.HasComponent<ResourceComponent>() &&
-                    entity.GetComponents<ResourceComponent>().Any(component => !component.Initialized);
+                var areAnyResourcesUninitialized = entity.HasComponent<IResource>() &&
+                    entity.GetComponents<IResource>().Any(component => !component.Initialized);
 
                 return hasResources && (!isEntityInitialized || areAnyResourcesUninitialized);
             });
@@ -33,28 +33,15 @@ namespace Engine.Systems
         private Dictionary<Entity, IEnumerable<InitializeAction>> OperableEntityInitializers =>
             OperableEntities.ToDictionary(
                 entity => entity,
-                entity => entity.Values.Select<Component, InitializeAction>(component =>
+                entity => entity.GetComponents<IResource>().Select<IResource, InitializeAction>(resource =>
             {
-                if (component is IBufferResource buffer)
+                // Only init device resources when dependencies are satisfied
+                if (resource is IDependencies dependant && !dependant.AreDependenciesSatisfied)
                 {
-                    return buffer.Initialize;
+                    return (a, b) => { }; // No-op
                 }
-                else if (component is ResourceComponent resource)
-                {
-                    // Only init device resources when dependencies are satisfied
-                    if (component is IDependencies dependant && !dependant.AreDependenciesSatisfied)
-                    {
-                        return (a, b) => { };
-                    }
 
-                    return resource.Initialize;
-                }
-                else
-                {
-                    throw new InvalidOperationException(
-                        $"{nameof(ResourceInitializer)} cannot operate on given component"
-                    );
-                }
+                return resource.Initialize;
             }));
 
         public override void Operate()
@@ -68,8 +55,7 @@ namespace Engine.Systems
                     initializeAction.Invoke(_factory, _device);
                 }
 
-                var isEntityInitialized = entity.Values
-                    .OfType<ResourceComponent>()
+                var isEntityInitialized = entity.Values.OfType<IResource>()
                     .Aggregate(true, (isInitialized, resource) => isInitialized && resource.Initialized);
                 if (isEntityInitialized)
                 {

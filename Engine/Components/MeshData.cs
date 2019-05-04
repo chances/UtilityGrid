@@ -25,8 +25,10 @@ namespace Engine.Components
         }
     }
 
-    public class MeshData<T> : MeshData, IBufferResource where T : struct, IVertexBufferDescription
+    public class MeshData<T> : MeshData, IResource where T : struct, IVertexBufferDescription
     {
+        public bool Initialized => VertexBuffer.Initialized;
+
         public MeshData(string name,
             VertexBuffer<T> vertexBuffer,
             PrimitiveTopology primitiveTopology = PrimitiveTopology.TriangleList,
