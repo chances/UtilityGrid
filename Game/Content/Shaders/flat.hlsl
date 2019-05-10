@@ -32,7 +32,7 @@ FragmentIn VS(VertexIn input)
 {
     FragmentIn output;
     float4 pos = float4(input.Position, 1);
-    output.Position = mul(mul(Model, ViewProj), pos);
+    output.Position = mul(Model * ViewProj, pos);
     output.Normal = input.Normal;
     return output;
 }

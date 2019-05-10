@@ -1,9 +1,11 @@
 using System;
+using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Engine;
 using Engine.Assets;
 using Engine.Components;
+using Engine.Components.Geometry;
 using Engine.Entities;
 using Engine.Primitives;
 using Game.Content;
@@ -83,7 +85,30 @@ namespace Game
 
             // World.Add(EntityFactory.Create(new UI.Surface(), UI.Surface.Mesh, uiMaterial));
 
-            World.Add(EntityFactory.Create(new Buildings.Building(), new Cube("Box").MeshData, flatMaterial));
+            var boxMesh = new Cube("Box").MeshData;
+            World.Add(EntityFactory.Create(
+                new Buildings.Building(RgbaFloat.Orange),
+                boxMesh,
+                flatMaterial
+            ));
+            World.Add(EntityFactory.Create(
+                new Buildings.Building(RgbaFloat.Red),
+                boxMesh,
+                flatMaterial,
+                new Transformation
+                {
+                    Translation = new Vector3(0, 0, 2)
+                }
+            ));
+            World.Add(EntityFactory.Create(
+                new Buildings.Building(RgbaFloat.Blue),
+                boxMesh,
+                flatMaterial,
+                new Transformation
+                {
+                    Translation = new Vector3(1, 2, 0)
+                }
+            ));
         }
 
         /// <summary>

@@ -14,11 +14,11 @@ namespace Game.Buildings
             new UniformModelTransformation(Matrix4x4.Identity);
         private UniformColor _color;
 
-        public Building() : base("Building")
+        public Building(RgbaFloat color) : base("Building")
         {
             Resources.OnInitialize = (factory, device) => {
                 _model.Buffer.Initialize(factory, device);
-                _color = new UniformColor(RgbaFloat.Orange);
+                _color = new UniformColor(color);
                 _color.Buffer.Initialize(factory, device);
 
                 ResourceLayout = factory.CreateResourceLayout(new ResourceLayoutDescription(
