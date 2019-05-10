@@ -133,8 +133,10 @@ namespace Game
 
             base.Update(gameTime);
 
-            var frameTime = gameTime.ElapsedGameTime.Milliseconds;
-            _window.Title = $"Utility Grid - {frameTime} ms - {FramesPerSecond} fps";
+            if (DebugMode) {
+                var frameTime = Math.Round(gameTime.ElapsedGameTime.TotalMilliseconds, 1);
+                _window.Title = $"Utility Grid - {frameTime} ms - {FramesPerSecond} fps";
+            }
         }
     }
 }
