@@ -1,9 +1,11 @@
 using System;
+using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Engine;
 using Engine.Assets;
 using Engine.Components;
+using Engine.Components.Geometry;
 using Engine.Entities;
 using Engine.Primitives;
 using Game.Content;
@@ -21,7 +23,6 @@ namespace Game
     public class UtilityGridGame : Engine.Game
     {
         private Sdl2Window _window;
-        private static CommandList _commandList;
 
         public UtilityGridGame()
         {
@@ -30,6 +31,8 @@ namespace Game
                 Console.WriteLine(resourceName);
             }
         }
+
+        public bool DebugMode { get; set; } = false;
 
         protected override GraphicsDevice CreateGraphicsDevice()
         {
@@ -51,14 +54,23 @@ namespace Game
 
             // TODO: Setup multisampling AA
 
-            var options = new GraphicsDeviceOptions(debug: false);
-            options.SwapchainDepthFormat = PixelFormat.R16_UNorm;
-            options.PreferDepthRangeZeroToOne = true;
-            options.PreferStandardClipSpaceYDirection = true;
+            var options = new GraphicsDeviceOptions(DebugMode)
+            {
+                SwapchainDepthFormat = PixelFormat.R16_UNorm,
+                PreferDepthRangeZeroToOne = true,
+                PreferStandardClipSpaceYDirection = true
+            };
 
-            return RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-                ? VeldridStartup.CreateGraphicsDevice(_window, options)
-                : GraphicsDeviceUtils.CreateOpenGLGraphicsDevice(_window, options);
+            var isWindowsOrMacOs = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ||
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            if (isWindowsOrMacOs)
+            {
+                return VeldridStartup.CreateGraphicsDevice(_window);
+            }
+            else
+            {
+                return GraphicsDeviceUtils.CreateOpenGLGraphicsDevice(_window, options);
+            }
         }
 
         protected override void Initialize()
@@ -69,20 +81,34 @@ namespace Game
             var flatMaterial = new Material("FlatMaterial", Shaders.Flat);
             var uiMaterial = new Material("UIMaterial", Shaders.UI);
 
-            World.Add(EntityFactory.Create<Camera>());
+            World.Add(EntityFactory.Create<UI.OrbitCamera>());
 
             // World.Add(EntityFactory.Create(new UI.Surface(), UI.Surface.Mesh, uiMaterial));
 
-            World.Add(EntityFactory.Create(new Buildings.Building(), new Cube("Box").MeshData, flatMaterial));
-
-            _commandList = ResourceFactory.CreateCommandList();
-        }
-
-        public override void Dispose()
-        {
-            _commandList.Dispose();
-
-            base.Dispose();
+            var boxMesh = new Cube("Box").MeshData;
+            World.Add(EntityFactory.Create(
+                new Buildings.Building(RgbaFloat.Orange),
+                boxMesh,
+                flatMaterial
+            ));
+            World.Add(EntityFactory.Create(
+                new Buildings.Building(RgbaFloat.Red),
+                boxMesh,
+                flatMaterial,
+                new Transformation
+                {
+                    Translation = new Vector3(0, 0, 2)
+                }
+            ));
+            World.Add(EntityFactory.Create(
+                new Buildings.Building(RgbaFloat.Blue),
+                boxMesh,
+                flatMaterial,
+                new Transformation
+                {
+                    Translation = new Vector3(1, 2, 0)
+                }
+            ));
         }
 
         /// <summary>
@@ -107,8 +133,10 @@ namespace Game
 
             base.Update(gameTime);
 
-            var frameTime = gameTime.ElapsedGameTime.Milliseconds;
-            _window.Title = $"Utility Grid - {frameTime} ms - {FramesPerSecond} fps";
+            if (DebugMode) {
+                var frameTime = Math.Round(gameTime.ElapsedGameTime.TotalMilliseconds, 1);
+                _window.Title = $"Utility Grid - {frameTime} ms - {FramesPerSecond} fps";
+            }
         }
     }
 }

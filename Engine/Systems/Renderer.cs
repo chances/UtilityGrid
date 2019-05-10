@@ -30,10 +30,6 @@ namespace Engine.Systems
             _commands.ClearColorTarget(0, RgbaFloat.Black);
             _commands.ClearDepthStencil(1f);
 
-            // TODO: Implement a keyboard provider system with IKeyboard-ish component
-            // _commands.ClearColorTarget(0,
-            //     MouseState.IsButtonDown(MouseButton.Left) ? RgbaFloat.Cyan : RgbaFloat.CornflowerBlue);
-
             var renderables = World.Where(CanOperateOn)
                 .GroupBy(entity =>
                 {

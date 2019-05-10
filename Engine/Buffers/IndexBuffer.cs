@@ -6,7 +6,7 @@ using Veldrid;
 
 namespace Engine.Buffers
 {
-    public class IndexBuffer : Buffer, IBufferResource
+    public class IndexBuffer : Buffer
     {
         private readonly ushort[] _indices;
 
@@ -22,16 +22,11 @@ namespace Engine.Buffers
 
         public int Count => _indices.Length;
 
-        public void Initialize(ResourceFactory factory, GraphicsDevice device)
+        public override void Initialize(ResourceFactory factory, GraphicsDevice device)
         {
             var size = (uint) (_indices.Length * sizeof(ushort));
             _buffer = factory.CreateBuffer(new BufferDescription(size, BufferUsage.IndexBuffer));
             device.UpdateBuffer(_buffer, 0, _indices);
-        }
-
-        public void Dispose()
-        {
-            _buffer.Dispose();
         }
     }
 }

@@ -26,6 +26,8 @@
   <Target Name="CompileShaders" BeforeTargets="PrepareForBuild">
     <!-- TODO: Prevent this on CI -->
     <Exec Command="sh compile-shaders.sh" WorkingDirectory="$(ProjectDirectory)" ConsoleToMSBuild="true" Condition="'$(OS)' == 'Unix'" />
+    <Exec Command="powershell.exe -NonInteractive -executionpolicy Unrestricted –command &quot;&amp; { &amp;&apos;.\compile-shaders.ps1&apos; } &quot;"
+      WorkingDirectory="$(ProjectDirectory)" ConsoleToMSBuild="true" Condition="'$(IsWindows)' == 'true'" />
   </Target>
   <ItemGroup>
     <None Update="libcairo.2.dylib" Condition="'$(IsOSX)'=='true'">

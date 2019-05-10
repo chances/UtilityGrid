@@ -1,6 +1,6 @@
 using Veldrid;
 
-namespace Engine.Buffers
+namespace Engine.Buffers.Uniforms
 {
     public interface IUniformBufferDescription<T> where T : struct
     {

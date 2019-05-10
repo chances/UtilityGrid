@@ -1,28 +1,30 @@
 using System;
 using System.Numerics;
-using Engine.Buffers;
+using Engine.Buffers.Uniforms;
 using Engine.Components;
 using Engine.Components.Receivers;
 using Engine.ECS;
-using JetBrains.Annotations;
 using Veldrid;
 
 namespace Game.Buildings
 {
-    public class Building : ResourceComponent, IDependencies, IResourceSet, ICameraViewProjection
+    public class Building : ResourceComponent, IDependencies, IResourceSet, IModelTransformation, ICameraViewProjection
     {
-        private UniformBuffer<Matrix4x4> _viewProj;
+        private UniformModelTransformation _model =
+            new UniformModelTransformation(Matrix4x4.Identity);
         private UniformColor _color;
 
-        public Building() : base("Building")
+        public Building(RgbaFloat color) : base("Building")
         {
             Resources.OnInitialize = (factory, device) => {
-                _color = new UniformColor(RgbaFloat.Orange);
+                _model.Buffer.Initialize(factory, device);
+                _color = new UniformColor(color);
                 _color.Buffer.Initialize(factory, device);
 
                 ResourceLayout = factory.CreateResourceLayout(new ResourceLayoutDescription(
                     new ResourceLayoutElementDescription[]
                     {
+                        UniformModelTransformation.ResourceLayout,
                         UniformViewProjection.ResourceLayout,
                         _color.LayoutDescription
                     }
@@ -30,7 +32,8 @@ namespace Game.Buildings
 
                 ResourceSet = factory.CreateResourceSet(new ResourceSetDescription(
                     ResourceLayout,
-                    _viewProj.DeviceBuffer,
+                    _model.Buffer.DeviceBuffer,
+                    CameraViewProjection.DeviceBuffer,
                     _color.Buffer.DeviceBuffer
                 ));
             };
@@ -41,12 +44,14 @@ namespace Game.Buildings
             };
         }
 
-        public bool AreDependenciesSatisfied => _viewProj != null;
+        public bool AreDependenciesSatisfied => CameraViewProjection != null;
 
-        public UniformBuffer<Matrix4x4> CameraViewProjection
+        public Matrix4x4 ModelTransformation
         {
-            set => _viewProj = value;
+            set => _model.Buffer.UniformData = value;
         }
+
+        public UniformBuffer<Matrix4x4> CameraViewProjection { get; set; }
 
         public ResourceLayout ResourceLayout { get; private set; }
 

@@ -32,6 +32,6 @@ namespace Engine.ECS
 
         public override abstract void Operate();
 
-        private static bool CanOperateOn(Entity entity) => entity.Values.Any(component => component is T);
+        private static bool CanOperateOn(Entity entity) => entity.HasComponent<T>();
     }
 }

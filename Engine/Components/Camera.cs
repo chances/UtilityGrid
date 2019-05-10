@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 using System.Numerics;
-using Engine.Buffers;
+using Engine.Buffers.Uniforms;
 using Engine.Components.Receivers;
 using Engine.ECS;
 using Veldrid;
@@ -10,9 +10,7 @@ namespace Engine.Components
 {
     public class Camera : ResourceComponent, IFramebufferSize, IUpdatable
     {
-        private Vector3 _position = Vector3.UnitZ * 5f;
-
-        private UniformViewProjection _viewProj;
+        private UniformMatrix _viewProj;
         // TODO: Implement tweener from MonoGame.Extended.Tween
 //        TweeningComponent _tweener;
 
@@ -30,23 +28,14 @@ namespace Engine.Components
 
         public Size FramebufferSize { get; set; } = new Size(960, 540);
 
-        public Matrix4x4 ViewMatrix
-        {
-            get
-            {
-                var lookAtVector = Vector3.Zero;
-                var upVector = Vector3.UnitY;
-
-                return Matrix4x4.CreateLookAt(_position, lookAtVector, upVector);
-            }
-        }
+        public Matrix4x4 ViewMatrix => Matrix4x4.CreateLookAt(Position, LookAt, Vector3.UnitY);
 
         public Matrix4x4 ProjectionMatrix
         {
             get
             {
-                var fieldOfView = (float) Math.PI / 4.0f; // 45 degrees
-                float nearClipPlane = 1;
+                var fieldOfView = (float) Math.PI / 2.0f; // 90 degrees
+                float nearClipPlane = 0.25f;
                 float farClipPlane = 200;
                 var aspectRatio = FramebufferSize.Width / (float) FramebufferSize.Height;
 
@@ -55,16 +44,19 @@ namespace Engine.Components
             }
         }
 
+        public Vector3 Position { get; set; } = Vector3.UnitZ * 3f;
+
+        public Vector3 LookAt { get; set; } = Vector3.Zero;
+
         public UniformBuffer<Matrix4x4> ViewProjectionUniform => _viewProj.Buffer;
 
         private Matrix4x4 ViewProjection => Matrix4x4.Multiply(ViewMatrix, ProjectionMatrix);
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             // TODO: Do tweening here with a tweener
 
             _viewProj.Buffer.UniformData = ViewProjection;
-            _viewProj.Buffer.Update();
         }
     }
 }

@@ -88,5 +88,47 @@ namespace Engine.Primitives
                 _primitiveTopology, _frontFace
             );
         }
+
+        public static MeshData FromSolid(Csg.Solid solid, string name)
+        {
+            var vertices = solid.Polygons
+                .SelectMany(polygon => polygon.Vertices)
+                .Select(vertex =>
+                    new Vector3((float) vertex.Pos.X, (float) vertex.Pos.Y, (float) vertex.Pos.Z)
+                ).ToArray();
+
+            var normals = solid.Polygons.SelectMany(polygon => {
+                var faceNormal = polygon.Plane.Normal;
+                var normal = new Vector3(
+                    (float) faceNormal.X,
+                    (float) faceNormal.Y,
+                    (float) faceNormal.Z
+                );
+
+                return polygon.Vertices.Select(_ => normal);
+            }).ToArray();
+
+            var vi = 0;
+            var indices = solid.Polygons.SelectMany(face => {
+                var faceIndices = new List<ushort>();
+                for (var v = 2; v < face.Vertices.Count; v++)
+                {
+                    faceIndices.Add((ushort) (vi));
+                    faceIndices.Add((ushort) (vi + v - 1));
+                    faceIndices.Add((ushort) (vi + v));
+                }
+                vi += face.Vertices.Count;
+                return faceIndices;
+            }).ToArray();
+
+            var builder = new MeshBuilder().WithFrontFaceClockwise(false);
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                builder.WithVertex(new VertexPositionNormal(vertices[i], normals[i]));
+            }
+            builder.WithIndices(indices);
+
+            return builder.Build<VertexPositionNormal>(name);
+        }
     }
 }
