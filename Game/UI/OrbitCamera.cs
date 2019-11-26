@@ -13,6 +13,8 @@ namespace Game.UI
     {
         private const float MinZoom = 1;
         private const float MaxZoom = 200;
+        private readonly float MinTilt = 5f.DegToRad();
+        private readonly float MaxTilt = 85f.DegToRad();
 
         private const float ZoomPerSecond = 5;
         private readonly float OrbitPerSecond = 180f.DegToRad();
@@ -63,6 +65,8 @@ namespace Game.UI
             var orbitY = orbit * (ShouldOrbitLeft ? -1 : ShouldOrbitRight ? 1 : 0);
             var orbitX = orbit * (ShouldOrbitDown ? -1 : ShouldOrbitUp ? 1 : 0);
             YawPitchRoll += new Vector3(orbitX, orbitY, 0);
+            YawPitchRoll = new Vector3(
+                Math.Clamp(YawPitchRoll.X, MinTilt, MaxTilt), YawPitchRoll.Y, YawPitchRoll.Z);
 
             if (KeyboardState.IsKeyDown(Key.Home))
                 YawPitchRoll = Vector3.Zero;
