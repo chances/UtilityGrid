@@ -65,7 +65,7 @@ namespace Game
                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             if (isWindowsOrMacOs)
             {
-                return VeldridStartup.CreateGraphicsDevice(_window);
+                return VeldridStartup.CreateGraphicsDevice(_window, options);
             }
             else
             {
